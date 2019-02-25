@@ -1,0 +1,1 @@
+export type PagerOnChange = (pageIndex?: number, pageSize?: number) => boolean | void

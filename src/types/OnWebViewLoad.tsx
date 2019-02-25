@@ -1,0 +1,1 @@
+export type OnWebViewLoad = (win?: Window) => void

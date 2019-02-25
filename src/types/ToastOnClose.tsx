@@ -1,0 +1,1 @@
+export type ToastOnClose = (id?: string) => void | boolean

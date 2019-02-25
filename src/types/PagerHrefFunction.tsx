@@ -1,0 +1,1 @@
+export type PagerHrefFunction = (pageIndex: number, pageSize: number) => string | void;

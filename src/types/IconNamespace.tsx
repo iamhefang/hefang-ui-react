@@ -1,0 +1,1 @@
+export type IconNamespace = "fa" | "fas" | "far" | "fab" | "fal";
