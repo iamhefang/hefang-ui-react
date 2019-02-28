@@ -5,6 +5,7 @@ import {guid, range} from "hefang-js";
 import {BaseModel} from "./src/interfaces/BaseModel";
 import {Dialog} from "./src/components/Dialog";
 import {SwitchBox} from "./src/components/SwitchBox";
+import {Icon} from "./src/components/Icon";
 
 const colorMap: ColorType[] = [
     "",

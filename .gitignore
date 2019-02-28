@@ -4,3 +4,5 @@ node_modules/
 *.iml
 *.js
 *.d.ts
+*.tgz
+*.map
