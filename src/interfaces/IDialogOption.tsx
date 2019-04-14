@@ -3,10 +3,12 @@ import {DialogButton} from "./DialogButton";
 import {DialogOnResize} from "../types/DialogOnResize";
 import {DialogOnMaximize} from "../types/DialogOnMaximize";
 import {DialogOnClose} from "../types/DialogOnClose";
+import {DialogOperater} from "./DialogOperater";
 
 export interface IDialogOption {
     maximize?: boolean
     maximizable?: boolean
+    doubleClickTitle2Max?: boolean
     resizable?: boolean
     url?: string
     icon?: string | ReactNode | boolean
@@ -25,4 +27,5 @@ export interface IDialogOption {
     minHeight?: ReactText
     maxWidth?: ReactText
     maxHeight?: ReactText
+    componentDidMount?: DialogOnClose
 }

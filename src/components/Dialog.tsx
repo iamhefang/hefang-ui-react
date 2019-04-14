@@ -9,8 +9,8 @@ import {IDialogOption} from "../interfaces/IDialogOption";
 import {DialogOptions} from "../interfaces/DialogOptions";
 import {DialogPromptOption} from "../interfaces/DialogPromptOption";
 import {DialogOnClose} from "../types/DialogOnClose";
-import {remove} from "../functions";
 import {IconNamespace} from "../types/IconNamespace";
+import {remove} from "../functions/dom";
 
 export interface DialogState {
     maximize: boolean
@@ -34,6 +34,7 @@ export class Dialog extends React.Component<DialogProps, DialogState> {
         children: null,
         maximize: false,
         maximizable: true,
+        doubleClickTitle2Max: true,
         resizable: false,
         movable: true
     };
@@ -133,7 +134,7 @@ export class Dialog extends React.Component<DialogProps, DialogState> {
                 text: "确定",
                 className: "hui-btn-primary",
                 onClick: (operater?: DialogOperater) => {
-                    execute(onOk, operater.id()) === false || Dialog.close(operater.id())
+                    execute(onOk, operater) === false || Dialog.close(operater.id())
                 }
             }],
             icon: true
@@ -288,7 +289,7 @@ export class Dialog extends React.Component<DialogProps, DialogState> {
         } else {
             const dialog = dialogs[id];
             if (!dialog) return;
-            if (execute(dialog.props.onClosing, dialog.operater) !== false) {
+            if (execute(dialog.props.onClosing, dialog.dialog) !== false) {
                 const container = document.getElementById(`dialog${id}`).parentElement;
                 ReactDOM.unmountComponentAtNode(container);
                 delete dialogs[id];
@@ -309,35 +310,36 @@ export class Dialog extends React.Component<DialogProps, DialogState> {
             title: props.url && props.title === true ? "加载中。。。" : props.title
         };
         dialogs[this.id] = this;
-        operaters[this.id] = this.operater as DialogOperater;
+        operaters[this.id] = this.dialog as DialogOperater;
     }
 
     private id: string;
     private data: any;
-    private ref: RefObject<HTMLDivElement> = React.createRef();
+    private refBody: RefObject<HTMLDivElement> = React.createRef();
+    private refContainer: RefObject<HTMLDivElement> = React.createRef();
     private isMouseDown: boolean = false;
-    private operater = {
+    private dialog = {
         height: (value?: ReactText) => {
             if (typeof value === "number") {
-                this.ref.current.style.height = value + "px";
-                return this.operater
+                this.refContainer.current.style.height = value + "px";
+                return this.dialog
             }
             if (typeof value === "string") {
-                this.ref.current.style.height = value;
-                return this.operater
+                this.refContainer.current.style.height = value;
+                return this.dialog
             }
-            return parseInt(this.ref.current.style.height);
+            return parseInt(this.refContainer.current.style.height);
         },
         width: (value?: ReactText) => {
             if (typeof value === "number") {
-                this.ref.current.style.width = value + "px";
-                return this.operater
+                this.refContainer.current.style.width = value + "px";
+                return this.dialog
             }
             if (typeof value === "string") {
-                this.ref.current.style.width = value;
-                return this.operater
+                this.refContainer.current.style.width = value;
+                return this.dialog
             }
-            return parseInt(this.ref.current.style.width);
+            return parseInt(this.refContainer.current.style.width);
         },
         close: (data: any = this.data) => {
             this.data = data;
@@ -346,19 +348,20 @@ export class Dialog extends React.Component<DialogProps, DialogState> {
         data: (data?: any) => {
             if (data !== undefined) {
                 this.data = data;
-                return this.operater;
+                return this.dialog;
             }
             return this.data
         },
         id: () => this.id,
         shake: (duration = 500) => {
             if (duration < 500) duration = 500;
-            this.ref.current.setAttribute("data-shake", "true");
+            this.refContainer.current.setAttribute("data-shake", "true");
             setTimeout(() => {
-                this.ref.current.removeAttribute("data-shake")
+                this.refContainer.current.removeAttribute("data-shake")
             }, duration);
-            return this.operater
-        }
+            return this.dialog
+        },
+        contentElement: () => this.refBody.current.firstChild
     };
 
     //鼠标按下时的坐标
@@ -390,14 +393,14 @@ export class Dialog extends React.Component<DialogProps, DialogState> {
         if (this.state.width + left > window.innerWidth) left = window.innerWidth - this.state.width;
         if (this.state.height + top > window.innerHeight) top = window.innerHeight - this.state.height;
         if (top < 0) top = 0;
-        this.ref.current.style.left = `${left}px`;
-        this.ref.current.style.top = `${top}px`;
+        this.refContainer.current.style.left = `${left}px`;
+        this.refContainer.current.style.top = `${top}px`;
     };
 
     private onDocumentMouseUp = e => {
         if (this.state.maximize) return;
         this.isMouseDown = false;
-        const style = this.ref.current.style
+        const style = this.refContainer.current.style
             , height = parseInt(style.height)
             , width = parseInt(style.width)
             , left = parseInt(style.left)
@@ -412,30 +415,36 @@ export class Dialog extends React.Component<DialogProps, DialogState> {
         e.stopPropagation();
         e.preventDefault();
         const {maximize} = this.state;
-        if (execute(this.props.onMaximizing, !maximize, this.operater) !== false) {
+        if (execute(this.props.onMaximizing, !maximize, this.dialog) !== false) {
             this.setState(
                 {maximize: !maximize},
-                () => execute(this.props.onMaximized, !maximize, this.operater)
+                () => execute(this.props.onMaximized, !maximize, this.dialog)
             )
         }
         return false;
     };
 
+    private onHeaderDoubleClick = (e) => {
+        if (!this.props.maximizable || !this.props.doubleClickTitle2Max) return;
+        this.onMaximize(e);
+    };
+
     componentDidMount() {
         this.setState({
-            height: this.ref.current.offsetHeight,
-            width: this.ref.current.offsetWidth,
-            left: (window.innerWidth - this.ref.current.offsetWidth) / 2,
-            top: (window.innerHeight - this.ref.current.offsetHeight) / 2
+            height: this.refContainer.current.offsetHeight,
+            width: this.refContainer.current.offsetWidth,
+            left: (window.innerWidth - this.refContainer.current.offsetWidth) / 2,
+            top: (window.innerHeight - this.refContainer.current.offsetHeight) / 2
         });
         if (this.props.movable) {
             document.addEventListener("mousemove", this.onDocumentMouseMove);
             document.addEventListener("mouseup", this.onDocumentMouseUp);
         }
+        execute(this.props.componentDidMount, this.dialog);
     }
 
     componentWillUnmount() {
-        execute(this.props.onClosed, this.data, this.operater);
+        execute(this.props.onClosed, this.data, this.dialog);
         if (this.props.movable) {
             document.removeEventListener("mousemove", this.onDocumentMouseMove);
             document.removeEventListener("mouseup", this.onDocumentMouseUp);
@@ -451,7 +460,7 @@ export class Dialog extends React.Component<DialogProps, DialogState> {
         if (this.props.url) {
             const js: JsObject<DialogOperater> = {
                 name: "dialogOperater",
-                value: this.operater as DialogOperater,
+                value: this.dialog as DialogOperater,
                 onError: error => this.setState({title: "网页"})
             };
             return <WebView className="hui-dialog-content"
@@ -459,7 +468,7 @@ export class Dialog extends React.Component<DialogProps, DialogState> {
                             onLoad={(win: Window) => {
                                 Object.defineProperty(win, "close", {
                                     value: (data?: any) => {
-                                        this.operater.data(data);
+                                        this.dialog.data(data);
                                         Dialog.close(this.id);
                                     }
                                 });
@@ -513,7 +522,7 @@ export class Dialog extends React.Component<DialogProps, DialogState> {
                         onClick={this.onMaximize}>
                     {this.state.maximize ? <Icon name="window-restore"/> : <Icon name="window-maximize"/>}
                 </button> : null}
-            <button className="hui-btn-border-less" onClick={e => this.operater.close()}>
+            <button className="hui-btn-border-less" onClick={e => this.dialog.close()}>
                 <Icon name="window-close"/>
             </button>
         </div>;
@@ -547,14 +556,15 @@ export class Dialog extends React.Component<DialogProps, DialogState> {
                     id={`dialog${this.id}`}
                     data-moving={this.state.moving}
                     data-movable={this.props.movable}
-                    ref={this.ref}>
+                    ref={this.refContainer}>
             <div className="hui-dialog-header"
+                 onDoubleClick={this.onHeaderDoubleClick}
                  onMouseDown={this.onHeaderMouseDown}>
                 {this.renderIcon()}
                 {this.renderTitle()}
                 {this.renderControls()}
             </div>
-            <div className="hui-dialog-body" style={bodyStyle}>
+            <div className="hui-dialog-body" style={bodyStyle} ref={this.refBody}>
                 {this.renderContent()}
             </div>
             {Array.isArray(this.props.buttons) ?
@@ -562,7 +572,7 @@ export class Dialog extends React.Component<DialogProps, DialogState> {
                     <button className={btn.className}
                             key={`dialogBtnKey${index}`}
                             style={btn.style}
-                            onClick={e => execute(btn.onClick, this.operater)}>
+                            onClick={e => execute(btn.onClick, this.dialog)}>
                         {btn.text}
                     </button>
                 )}</div> : null}

@@ -1,14 +1,15 @@
 {
   "name": "hefang-ui-react",
-  "version": "1.0.12",
+  "version": "1.0.16",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "webpack -w --mode=development --config=example.webpack.config.tsx",
     "watch": "webpack -w --mode=development",
-    "build": "webpack -p --mode=production && echo 'export as namespace HuiReact;' >> index.d.ts",
+    "build": "tsc && webpack -p --mode=production",
     "buildWatch": "webpack -w -p --mode=production && echo 'export as namespace HuiReact;' >> index.d.ts",
-    "buildAndPack": "rm *.tgz && npm run build && npm pack"
+    "buildAndPack": "rm *.tgz && npm run build && npm pack",
+    "dev": "webpack-dev-server --inline"
   },
   "keywords": [],
   "author": "",
@@ -18,7 +19,8 @@
     "hefang-ui-css": "^1.1.0",
     "qrcode": "^1.3.2",
     "react": "^16.4.0",
-    "react-dom": "^16.4.0"
+    "react-dom": "^16.4.0",
+    "webpack-dev-server": "^3.3.1"
   },
   "devDependencies": {
     "@types/node": "^10.12.3",

@@ -6,13 +6,58 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
-    <link rel="stylesheet" href="node_modules/hefang-ui-css/hefang-ui.css">
+    <link rel="stylesheet" href="/hefang-ui.css">
     <script src="node_modules/react/umd/react.development.js"></script>
     <script src="node_modules/react-dom/umd/react-dom.development.js"></script>
     <script src="node_modules/hefang-js/index.js"></script>
     <script>
         document.write("<script defer src=\"example.js?v=" + Math.random() * 1e10 + "\"></" + "script>")
     </script>
+    <style>
+        .hui-popup {
+            position: absolute;
+            left: 0;
+            top: 100%;
+            background: white;
+            box-shadow: 0 0 1rem black;
+            overflow: hidden;
+            border-bottom-left-radius: .2rem;
+            border-bottom-right-radius: .2rem;
+            animation: fade-in .35s ease-in;
+        }
+
+        .hui-selector-container {
+            position: relative;
+        }
+
+        .hui-selector-item {
+            list-style: none;
+            padding: 0 1rem;
+            height: 3rem;
+            line-height: 3rem;
+        }
+
+        .hui-selector-item.active {
+            background: blue;
+            color: white;
+        }
+
+        .hui-selector-popup {
+            box-sizing: border-box;
+            top: 120%;
+        }
+
+        .hui-selector-popup .hui-input {
+            margin: .8rem;
+        }
+
+        .hui-selector-list {
+            max-height: 25rem;
+            overflow: auto;
+        }
+
+
+    </style>
 </head>
 <body>
 

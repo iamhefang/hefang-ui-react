@@ -1,29 +1,26 @@
-let pxOf1rem = -1;
+import {remove} from "./dom";
 
-
-function calcPxOf1rem() {
-    if (pxOf1rem < 1) {
-        const tmpDiv = document.createElement("div") as HTMLDivElement;
-        try {
-            document.body.appendChild(tmpDiv);
-            tmpDiv.style.position = "fixed";
-            tmpDiv.style.height = "1rem";
-            tmpDiv.style.width = "1rem";
-            pxOf1rem = tmpDiv.scrollHeight;
-        } catch (e) {
-            pxOf1rem = 16
-        } finally {
-            tmpDiv.remove();
-        }
+const _1rem = (() => {
+    const tmpDiv = document.createElement("div") as HTMLDivElement;
+    try {
+        document.body.appendChild(tmpDiv);
+        tmpDiv.style.position = "fixed";
+        tmpDiv.style.height = "1rem";
+        return tmpDiv.scrollHeight;
+    } catch (e) {
+        return 16
+    } finally {
+        remove(tmpDiv)
     }
-    return pxOf1rem;
-}
-
+})();
 
 export function px2rem(px: number): number {
-    return px * calcPxOf1rem();
+    if (px == 0) return 0;
+    return px / _1rem;
 }
 
-export function rem2px(rem: number) {
-    return rem / calcPxOf1rem();
+export function rem2px(rem: number): number {
+    if (rem == 0) return 0;
+    return rem * _1rem;
 }
+

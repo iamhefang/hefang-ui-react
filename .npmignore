@@ -9,4 +9,4 @@ webpack.config.d.ts
 example.webpack.config.d.ts
 hefang-ui-react.iml
 *.tgz
-src/
+*.map

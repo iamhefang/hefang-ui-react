@@ -2,14 +2,13 @@
   "compilerOptions": {
     "module": "commonjs",
     "target": "es5",
-    "sourceMap": true,
+    "sourceMap": false,
     "jsx": "react",
     "lib": [
       "es6",
       "dom"
     ],
-    "declaration": true,
-    "declarationDir": "./"
+    "declaration": true
   },
   "exclude": [
     "node_modules"

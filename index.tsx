@@ -1,8 +1,12 @@
 //函数
+export * from "./src/functions/dom"
 export * from "./src/functions/queryString"
 export * from "./src/functions/fullScreen"
 export * from "./src/functions/size"
 export * from "./src/functions/storage"
+
+//模型
+export * from "./src/models/PagerModel"
 
 //类型
 export * from "./src/types/ColorType"
@@ -22,7 +26,6 @@ export * from "./src/types/TableOnSelected"
 export * from "./src/types/TableOnSort"
 export * from "./src/types/ToastOnClose"
 
-
 //枚举
 export * from "./src/enums/IconAnimation"
 export * from "./src/enums/IconSize"
@@ -38,7 +41,6 @@ export * from "./src/interfaces/IDialogOption"
 export * from "./src/interfaces/IPager"
 export * from "./src/interfaces/PagerResult"
 export * from "./src/interfaces/SqlSort"
-
 
 //组件
 export * from "./src/components/Button"

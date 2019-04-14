@@ -17,8 +17,8 @@ export interface IconProps {
 
 export function Icon(props: IconProps) {
     let className = `hui-icon ${props.className || ""} ${props.namespace || 'fa'} fa-${props.name}`;
-    this.props.animation && (className += ` fa-${props.animation}`);
-    this.props.size && (className += ` fa-${props.size}`);
+    props.animation && (className += ` fa-${props.animation}`);
+    props.size && (className += ` fa-${props.size}`);
     return React.createElement(props.tagName || 'i', {
         className,
         style: props.style,

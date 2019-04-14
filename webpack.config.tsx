@@ -1,11 +1,12 @@
 import {Configuration} from "webpack";
-
-const DtsPlugin = require('dts-webpack-plugin');
+import * as path from "path";
+//
+// const DtsPlugin = require('dts-webpack-plugin');
 
 const config: Configuration = {
     entry: "./index.tsx",
     output: {
-        path: __dirname,
+        path: path.resolve(__dirname, 'dist'),
         filename: "./index.js",
         libraryTarget: "umd",
         library: "HuiReact",
@@ -46,9 +47,9 @@ const config: Configuration = {
         }
     },
     plugins: [
-        new DtsPlugin({
-            name: 'hefang-ui-react'
-        })
+        // new DtsPlugin({
+        //     name: 'hefang-ui-react'
+        // })
     ]
 };
 

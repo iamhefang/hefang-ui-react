@@ -1,3 +1,3 @@
 import {DialogOperater} from "../interfaces/DialogOperater";
 
-export type DialogOnClose = (operater?: DialogOperater) => boolean | void
+export type DialogOnClose = (dialog?: DialogOperater) => boolean | void
