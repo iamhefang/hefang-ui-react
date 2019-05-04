@@ -33,6 +33,7 @@ export * from "./src/enums/IconSize"
 //接口
 export * from "./src/interfaces/ApiResult"
 export * from "./src/interfaces/BaseModel"
+export * from "./src/interfaces/CodeResult"
 export * from "./src/interfaces/DialogButton"
 export * from "./src/interfaces/DialogOperater"
 export * from "./src/interfaces/DialogOptions"

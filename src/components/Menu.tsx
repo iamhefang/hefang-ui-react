@@ -39,11 +39,11 @@ export class Menu extends React.Component<MenuProps, MenuState> {
 
     private renderMenuItems = (item: MenuItem) => {
         return item.type === "separator" ? <li className="hui-menu-separator"/> : <li className="hui-menu-item">
-            <label className="hui-menu-label display-flex-row" onClick={e => execute(item.onClick, item)}>
+            <span className="hui-menu-label display-flex-row" onClick={e => execute(item.onClick, item)}>
                 <Icon name={item.icon || "null"}/>
-                <span className="flex-1">{item.text}</span>
+                <label className="flex-1">{item.text}</label>
                 {item.subMenu && item.subMenu.length > 0 ? <Icon name={"caret-right"}/> : undefined}
-            </label>
+            </span>
             {item.subMenu && item.subMenu.length > 0 ? <ul className="hui-menu">
                 {item.subMenu.map(this.renderMenuItems)}
             </ul> : undefined}

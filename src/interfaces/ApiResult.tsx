@@ -4,5 +4,6 @@ export interface ApiResult<T> {
     needLogin?: boolean
     needPassword?: boolean
     needPermission?: boolean
-    needUnLock?: boolean
+    needUnLock?: boolean,
+    debug?: object
 }
