@@ -11,7 +11,7 @@ export interface ButtonProps {
     onClick?: MouseEventHandler<HTMLButtonElement>
     className?: string
     style?: CSSProperties
-    type?: string
+    theme?: string
     loading?: boolean
     text: ReactText
     disabled?: boolean
@@ -20,7 +20,7 @@ export interface ButtonProps {
 
 export class Button extends React.Component<ButtonProps, ButtonState> {
     static readonly defaultProps: ButtonProps = {
-        type: "",
+        theme: "",
         loading: false,
         text: '',
         disabled: false

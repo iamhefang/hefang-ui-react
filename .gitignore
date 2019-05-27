@@ -6,3 +6,5 @@ node_modules/
 *.d.ts
 *.tgz
 *.map
+/package-lock.json
+/yarn.lock
