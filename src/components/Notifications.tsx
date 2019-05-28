@@ -1,35 +1,91 @@
 import * as React from "react";
-import {ReactNode} from "react";
-import {guid} from "hefang-js";
+import {CSSProperties, ReactNode} from "react";
+import {execute, guid} from "hefang-js";
 import {div} from "../functions/dom";
 import {render} from "react-dom";
+import {Icon} from "./Icon";
+import Timeout = NodeJS.Timeout;
 
 
-export interface NotificationProps {
-    id?: string
-    title?: string
-    message?: string
-    actions?: string[]
-    icon?: ReactNode
+export interface NotificationProps extends NotificationOptions {
+    isClosing: boolean
 }
 
-const poolKey = Symbol("NotificationPoolKey")
-    , containerKey = Symbol("NotificationContainerKey");
+export interface NotificationOptions {
+    id?: string
+    title?: ReactNode
+    message?: ReactNode
+    actions?: NotificationButton[]
+    icon?: ReactNode
+    showClose?: boolean
+    autoClose?: number
+}
 
-export class Notifications extends React.Component<NotificationProps> {
+export interface NotificationButton {
+    onClick?: (props: NotificationOptions) => boolean | void
+    text: string
+    className?: string
+    style?: CSSProperties
+}
+
+interface State {
+    closeDelay: number
+}
+
+const containerId = "notification" + guid()
+    , containerKey = Symbol("NotificationContainerKey")
+    , propsPool: { [key: string]: NotificationOptions } = {}
+    , timerPool: { [key: string]: Timeout } = {};
+let updateTimer;
+
+export class Notifications extends React.Component<NotificationProps, State> {
     static readonly defaultProps: NotificationProps = {
-        actions: []
+        actions: [],
+        showClose: true,
+        isClosing: false,
+        autoClose: 5000
     };
 
     constructor(props) {
         super(props);
+        this.state = {
+            closeDelay: 0
+        };
     }
 
-    static send(props: NotificationProps) {
+    /**
+     * 展开/收缩通知中心
+     */
+    static toggleFold() {
+        if (!Notifications[containerKey]) return;
+        const fold = (Notifications[containerKey] as HTMLDivElement).getAttribute("data-fold") === "true";
+        (Notifications[containerKey] as HTMLDivElement).setAttribute("data-fold", fold ? "false" : "true")
+    }
+
+    static count(): number {
+        return Object.keys(propsPool).length
+    }
+
+    /**
+     * 发送一条通知
+     * @param props
+     */
+    static send(props: NotificationOptions) {
         props.id = props.id || guid();
-        Notifications[poolKey][props.id] = props;
-        Notifications[containerKey] = Notifications[containerKey] || div({appendTo: document.body});
-        Notifications.update();
+        props['isClosing'] = Notifications.defaultProps.isClosing;
+        propsPool[props.id] = props;
+        Notifications[containerKey] = Notifications[containerKey] || div({
+            appendTo: document.body,
+            id: containerId,
+            className: "hui-notification-container"
+        });
+        Notifications.update(() => {
+            if (props.autoClose > 0) {
+                timerPool[props.id] = setTimeout(() => {
+                    Notifications.close(props.id)
+                }, props.autoClose)
+            }
+        });
     }
 
     /**
@@ -38,37 +94,62 @@ export class Notifications extends React.Component<NotificationProps> {
      */
     static close(id?: string) {
         if (!id) {
-            Object.keys(Notifications[poolKey]).forEach(key => {
-                delete Notifications[poolKey][key];
+            Object.keys(propsPool).forEach(key => {
+                Notifications.close(key)
             });
         } else {
-            delete Notifications[poolKey][id];
+            (propsPool[id] as NotificationProps).isClosing = true;
+            setTimeout(() => {
+                delete propsPool[id];
+                Notifications.update();
+            }, 360)
         }
         Notifications.update();
     }
 
-    private static update() {
-        const keys = Object.keys(Notifications[poolKey]);
-        render(keys.map(key => {
-            return <Notifications {...Notifications[poolKey][key]} key={Notifications[poolKey][key].id}/>
-        }), Notifications[containerKey])
+    private static update(callback?: (notifications: NotificationOptions[]) => void) {
+        updateTimer && clearTimeout(updateTimer);
+        updateTimer = setTimeout(() => {
+            const keys = Object.keys(propsPool).reverse();
+            render(keys.map(key => {
+                return <Notifications {...propsPool[key]} key={propsPool[key].id}/>
+            }), Notifications[containerKey], () => {
+                typeof callback === "function" && callback(Object.keys(propsPool).map(key => propsPool[key]).filter(item => !(item as NotificationProps).isClosing));
+            })
+        }, 0)
+    }
+
+    private onActionClick = (btn: NotificationButton) => {
+        if (execute(btn.onClick, this.props) !== false) {
+            Notifications.close(this.props.id)
+        }
+    };
+
+    componentWillUnmount(): void {
+        clearTimeout(timerPool[this.props.id]);
+        delete timerPool[this.props.id]
     }
 
     render() {
-        return <div className="hui-notification">
+        return <div className="hui-notification display-flex-row" data-closing={this.props.isClosing}>
             {this.props.icon ? <div className="hui-notification-icon">
                 {this.props.icon}
             </div> : null}
             <div className="hui-notification-body flex-1">
                 <div className="hui-notification-title">{this.props.title}</div>
                 <div className="hui-notification-message">{this.props.message}{this.props.id}</div>
-                <div className="text-right">
-                    {this.props.actions.map(btn => <button className="no-background no-border">{btn}</button>)}
+                <div className="hui-notification-actions text-right">
+                    {this.props.actions.map(
+                        btn => <button className={btn.className}
+                                       onClick={e => this.onActionClick(btn)}>{btn.text}</button>
+                    )}
                 </div>
             </div>
-            <button className="hui-notification-close" onClick={e => Notifications.close(this.props.id)}>x</button>
+            {this.props.showClose ?
+                <button className="hui-btn-border-less hui-notification-close"
+                        onClick={e => Notifications.close(this.props.id)}>
+                    <Icon name={"times"}/>
+                </button> : null}
         </div>
     }
 }
-
-Notifications[poolKey] = {};

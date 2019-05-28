@@ -7,11 +7,13 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <link rel="stylesheet" href="node_modules/hefang-ui-css/hefang-ui.css">
+
     <script src="node_modules/react/umd/react.development.js"></script>
     <script src="node_modules/react-dom/umd/react-dom.development.js"></script>
     <script src="node_modules/hefang-js/dist/index.js"></script>
     <script>
-        document.write("<script defer src=\"example.js?v=" + Math.random() * 1e10 + "\"></" + "script>")
+        document.write(`<link rel="stylesheet" href="./notification.css?v=${Math.random()}">`)
+        document.write("<script defer src=\"example.js?v=" + Math.random() + "\"></" + "script>")
     </script>
 </head>
 <body>

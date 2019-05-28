@@ -8,6 +8,7 @@ import {Selector} from "./src/components/Selector";
 import {SelectorItem} from "./src/models/SelectorItem";
 import {Menu} from "./src/components/Menu";
 import {Notifications} from "./src/components/Notifications";
+import {Icon} from "./src/components/Icon";
 
 const colorMap: ColorType[] = [
     "",
@@ -26,6 +27,10 @@ const data: SelectorItem[] = range(1, 20).map(idx => {
         value: idx
     }
 });
+
+const timer = setTimeout(() => console.log("in timer"), 0);
+console.log(timer);
+clearTimeout(timer);
 
 ReactDOM.render(<div>
     <Menu items={[
@@ -127,7 +132,24 @@ ReactDOM.render(<div>
     </button>
     <button onClick={e => Notifications.send({
         title: "这是标题",
-        message: "这是一段内容一段内容一段内容一段内容一段内容一段内容"
+        message: "这是一段内容一段内容一段内容一段内容一段内容一段内容",
+        showClose: false
     })}>notification
     </button>
+    <button onClick={e => Notifications.send({
+        title: "这是标题",
+        message: "这是一段内容一段内容一段内容一段内容一段内容一段内容",
+        icon: <Icon name={"cog"}/>, actions: [
+            {
+                text: "确定",
+                onClick: console.log
+            },
+            {
+                text: "取消",
+                onClick: console.log
+            }
+        ]
+    })}>notification with icon
+    </button>
+    <button onClick={e => Notifications.toggleFold()}>toggle({Notifications.count()})</button>
 </div>, document.body);
