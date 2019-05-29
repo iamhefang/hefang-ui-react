@@ -9,6 +9,7 @@ import {SelectorItem} from "./src/models/SelectorItem";
 import {Menu} from "./src/components/Menu";
 import {Notifications} from "./src/components/Notifications";
 import {Icon} from "./src/components/Icon";
+import {ListView} from "./src/components/ListView";
 
 const colorMap: ColorType[] = [
     "",
@@ -153,4 +154,13 @@ ReactDOM.render(<div>
     </button>
     <button onClick={e => Notifications.toggleFold()}>toggle({Notifications.count()})</button>
     <button onClick={e => Notifications.success(guid(), "", {id: "111111"})}>error</button>
+    <ListView items={[
+        {label: "11111111", icon: <Icon name={'cog'}/>},
+        {
+            label: "q2222222222", child: [
+                {label: "4444444444444444"}
+            ], icon: <Icon name={'cog'}/>
+        },
+        {label: "3333333333", icon: <Icon name={'cog'}/>}
+    ]}/>
 </div>, document.body);
