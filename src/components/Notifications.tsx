@@ -5,6 +5,7 @@ import {div} from "../functions/dom";
 import {render} from "react-dom";
 import {Icon} from "./Icon";
 import Timeout = NodeJS.Timeout;
+import {extend} from "hefang-js/src/core";
 
 
 export interface NotificationProps extends NotificationOptions {
@@ -64,6 +65,38 @@ export class Notifications extends React.Component<NotificationProps, State> {
 
     static count(): number {
         return Object.keys(propsPool).length
+    }
+
+    static error(message: string, title?: string, options?: NotificationOptions) {
+        const props: NotificationOptions = {
+            message, title: title || "错误",
+            icon: <Icon name="times-circle" style={{color: 'red'}}/>
+        };
+        Notifications.send(extend(true, {}, options, props))
+    }
+
+    static warning(message: string, title?: string, options?: NotificationOptions) {
+        const props: NotificationOptions = {
+            message, title: title || "警告",
+            icon: <Icon name="exclamation-triangle" style={{color: 'orange'}}/>
+        };
+        Notifications.send(extend(true, {}, options, props))
+    }
+
+    static info(message: string, title?: string, options?: NotificationOptions) {
+        const props: NotificationOptions = {
+            message, title: title || "提示",
+            icon: <Icon name="exclamation-circle"/>
+        };
+        Notifications.send(extend(true, {}, options, props))
+    }
+
+    static success(message: string, title?: string, options?: NotificationOptions) {
+        const props: NotificationOptions = {
+            message, title: title || "成功",
+            icon: <Icon name="check" style={{color: 'green'}}/>
+        };
+        Notifications.send(extend(true, {}, options, props))
     }
 
     /**

@@ -152,4 +152,5 @@ ReactDOM.render(<div>
     })}>notification with icon
     </button>
     <button onClick={e => Notifications.toggleFold()}>toggle({Notifications.count()})</button>
+    <button onClick={e => Notifications.success(guid(), "", {id: "111111"})}>error</button>
 </div>, document.body);
