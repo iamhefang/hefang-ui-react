@@ -9,21 +9,21 @@ import {TableOnSort} from "../types/TableOnSort";
 import {SqlSort} from "../interfaces/SqlSort";
 import {Icon} from "./Icon";
 
-export interface TableState {
-    columns: TableColumnProps[]
+export interface TableState<T extends BaseModel> {
+    columns: TableColumnProps<T>[]
     selected: { [key: string]: boolean }
     allSelected: boolean
     sort: SqlSort
     expandId: string
 }
 
-export interface TableProps {
+export interface TableProps<T extends BaseModel> {
     id?: string
     className?: string
     style?: CSSProperties
     height?: ReactText
 
-    children: TableChildren
+    children: TableChildren<T>
 
     selectable?: boolean
     selected?: string[]
@@ -31,7 +31,7 @@ export interface TableProps {
     border?: "row" | "col" | "both" | "none"
     sort?: SqlSort
 
-    data: BaseModel[]
+    data: Array<T>
     emptyChildren?: ReactNode
     footer?: ReactNode
 
@@ -39,10 +39,10 @@ export interface TableProps {
     onSort?: TableOnSort
 }
 
-function parseChildren(children: TableChildren, columns: TableColumnProps[]) {
+function parseChildren<T extends BaseModel>(children: TableChildren<T>, columns: TableColumnProps<T>[]) {
     if (!children) return;
     if (Array.isArray(children)) {
-        (children as ReactElement<TableColumnProps>[]).forEach(item => {
+        (children as ReactElement<TableColumnProps<T>>[]).forEach(item => {
             parseChildren(item, columns)
         })
     } else {
@@ -50,8 +50,8 @@ function parseChildren(children: TableChildren, columns: TableColumnProps[]) {
     }
 }
 
-export class Table extends React.Component<TableProps, TableState> {
-    static readonly defaultProps: TableProps = {
+export class Table<T extends BaseModel> extends React.Component<TableProps<T>, TableState<T>> {
+    static readonly defaultProps: TableProps<BaseModel> = {
         children: [],
         header: true,
         selectable: false,
@@ -62,9 +62,9 @@ export class Table extends React.Component<TableProps, TableState> {
 
     private expandElement: ReactNode;
 
-    constructor(props: TableProps) {
+    constructor(props: TableProps<T>) {
         super(props);
-        const columns: TableColumnProps[] = []
+        const columns: TableColumnProps<T>[] = []
             , selected = {};
         if (Array.isArray(props.selected)) {
             props.selected.forEach(s => {
@@ -133,17 +133,21 @@ export class Table extends React.Component<TableProps, TableState> {
         }
     };
 
+    /**
+     * 渲染表头
+     */
     private renderHeader = () => {
         const tds: ReactElement<HTMLTableDataCellElement>[] = [];
-
         if (this.props.selectable) {
-            tds.push(<td key={"selectAll"} style={{textAlign: "center", width: "2rem"}}><label>
-                <input type="checkbox" checked={this.state.allSelected}
-                       onChange={e => this.onRowCheck("all", e.currentTarget.checked)}/>
-            </label></td>)
+            tds.push(<th key={"selectAll"} style={{textAlign: "center", width: "2rem"}}>
+                <label>
+                    <input type="checkbox" checked={this.state.allSelected}
+                           onChange={e => this.onRowCheck("all", e.currentTarget.checked)}/>
+                </label>
+            </th>)
         }
 
-        this.state.columns.forEach((col: TableColumnProps, idx) => {
+        this.state.columns.forEach((col: TableColumnProps<T>, idx) => {
             let sort = undefined, sortIcon = undefined, cursor = undefined;
             if (col.sort) {
                 if (type(col.sort) === Types.String) {
@@ -166,7 +170,7 @@ export class Table extends React.Component<TableProps, TableState> {
                 }
             }
 
-            tds.push(<td id={`header${idx}`}
+            tds.push(<th id={`header${idx}`}
                          style={{textAlign: col.align, width: col.width}}>
                 {cursor ? <button className="no-background no-border mp-0"
                                   style={{cursor}}
@@ -178,7 +182,7 @@ export class Table extends React.Component<TableProps, TableState> {
                     {sortIcon}
                 </button> : col.title}
 
-            </td>)
+            </th>)
         });
 
         return <thead>
@@ -186,6 +190,9 @@ export class Table extends React.Component<TableProps, TableState> {
         </thead>;
     };
 
+    /**
+     * 渲染表格
+     */
     private renderBody = () => {
         if (!this.props.data || this.props.data.length === 0) {
             return <tr key={"trEmptyBody"}>
@@ -218,13 +225,15 @@ export class Table extends React.Component<TableProps, TableState> {
                     tds.push(<td key={key} style={style}>{d[col.field as string]}</td>)
                 } else if (fieldType === Types.Function) {
                     tds.push(<td key={key}
-                                 style={style}>{execute(col.field, d, (node: ReactNode) => this.onExpand(d, node))}</td>)
+                                 style={style}>
+                        {execute(col.field, d, (node: ReactNode) => this.onExpand(d, node), idx)}
+                    </td>)
                 } else {
                     tds.push(<td key={key} style={style}>{col.field + ""}</td>)
                 }
             });
             trs.push(<tr key={`tr${d.id}`}>{tds}</tr>);
-            if (this.state.expandId === d.id) {
+            if (this.state.expandId && this.state.expandId === d.id) {
                 trs.push(<tr className="hui-table-expand" key={`expand${d.id}`}>
                     <td colSpan={this.state.columns.length + (this.props.selectable ? 1 : 0)}>{this.expandElement}</td>
                 </tr>)

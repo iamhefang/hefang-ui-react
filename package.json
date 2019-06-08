@@ -1,13 +1,13 @@
 {
   "name": "hefang-ui-react",
-  "version": "1.0.16",
+  "version": "1.0.18",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "webpack -w --mode=development --config=example.webpack.config.tsx",
     "watch": "webpack -w --mode=development",
-    "build": "tsc && webpack -p --mode=production",
-    "buildWatch": "webpack -w -p --mode=production && echo 'export as namespace HuiReact;' >> index.d.ts",
+    "build": "tsc && webpack -p --mode=production && echo export as namespace HuiReact; >> index.d.ts",
+    "buildWatch": "webpack -w -p --mode=production && echo export as namespace HuiReact; >> index.d.ts",
     "buildAndPack": "rm *.tgz && npm run build && npm pack",
     "dev": "webpack-dev-server --inline"
   },

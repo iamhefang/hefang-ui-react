@@ -1,11 +1,10 @@
 import * as React from "react";
 import {CSSProperties, ReactNode} from "react";
-import {execute, guid} from "hefang-js";
+import {execute, guid, extend} from "hefang-js";
 import {div} from "../functions/dom";
 import {render} from "react-dom";
 import {Icon} from "./Icon";
 import Timeout = NodeJS.Timeout;
-import {extend} from "hefang-js/src/core";
 
 
 export interface NotificationProps extends NotificationOptions {
