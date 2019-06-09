@@ -46,6 +46,7 @@ export * from "./src/interfaces/SqlSort"
 //组件
 export * from "./src/components/Button"
 export * from "./src/components/Dialog"
+export * from "./src/components/Empty"
 export * from "./src/components/Icon"
 export * from "./src/components/Notifications"
 export * from "./src/components/Pager"

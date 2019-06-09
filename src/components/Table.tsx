@@ -62,6 +62,18 @@ export class Table<T extends BaseModel> extends React.Component<TableProps<T>, T
 
     private expandElement: ReactNode;
 
+    static getDerivedStateFromProps<T extends BaseModel>(props: TableProps<T>, state) {
+        const columns: TableColumnProps<T>[] = []
+            , selected = {};
+        if (Array.isArray(props.selected)) {
+            props.selected.forEach(s => {
+                selected[s] = true;
+            })
+        }
+        parseChildren(props.children, columns);
+        return {selected, columns}
+    }
+
     constructor(props: TableProps<T>) {
         super(props);
         const columns: TableColumnProps<T>[] = []
@@ -139,12 +151,12 @@ export class Table<T extends BaseModel> extends React.Component<TableProps<T>, T
     private renderHeader = () => {
         const tds: ReactElement<HTMLTableDataCellElement>[] = [];
         if (this.props.selectable) {
-            tds.push(<th key={"selectAll"} style={{textAlign: "center", width: "2rem"}}>
+            tds.push(<td key={"selectAll"} style={{textAlign: "center", width: "2rem"}}>
                 <label>
                     <input type="checkbox" checked={this.state.allSelected}
                            onChange={e => this.onRowCheck("all", e.currentTarget.checked)}/>
                 </label>
-            </th>)
+            </td>)
         }
 
         this.state.columns.forEach((col: TableColumnProps<T>, idx) => {
@@ -170,7 +182,7 @@ export class Table<T extends BaseModel> extends React.Component<TableProps<T>, T
                 }
             }
 
-            tds.push(<th id={`header${idx}`}
+            tds.push(<td id={`header${idx}`}
                          style={{textAlign: col.align, width: col.width}}>
                 {cursor ? <button className="no-background no-border mp-0"
                                   style={{cursor}}
@@ -182,7 +194,7 @@ export class Table<T extends BaseModel> extends React.Component<TableProps<T>, T
                     {sortIcon}
                 </button> : col.title}
 
-            </th>)
+            </td>)
         });
 
         return <thead>
@@ -204,37 +216,37 @@ export class Table<T extends BaseModel> extends React.Component<TableProps<T>, T
 
         const trs: ReactElement<HTMLTableColElement>[] = [];
 
-        this.props.data.forEach(d => {
-            if (!d) return;
+        this.props.data.forEach((data, index) => {
+            if (!data) return;
             const tds: ReactElement<HTMLTableDataCellElement>[] = [];
             if (this.props.selectable) {
-                tds.push(<td key={`select${d.id}`} style={{textAlign: "center", width: "2rem"}}><label>
+                tds.push(<td key={`select${data.id}`} style={{textAlign: "center", width: "2rem"}}><label>
                     <input type="checkbox"
-                           checked={d.id in this.state.selected}
-                           onChange={e => this.onRowCheck(d.id, e.currentTarget.checked)}/>
+                           checked={data.id in this.state.selected}
+                           onChange={e => this.onRowCheck(data.id, e.currentTarget.checked)}/>
                 </label></td>)
             }
             this.state.columns.forEach((col, idx) => {
                 if (!col) return;
                 const fieldType = type(col.field)
                     , style: CSSProperties = {}
-                    , key = `td${d.id}${idx}`;
+                    , key = `td${data.id}${idx}`;
                 col.width && (style.width = col.width);
                 col.align && (style.textAlign = col.align);
                 if (fieldType === Types.String || fieldType === Types.Number) {
-                    tds.push(<td key={key} style={style}>{d[col.field as string]}</td>)
+                    tds.push(<td key={key} style={style}>{data[col.field as string]}</td>)
                 } else if (fieldType === Types.Function) {
                     tds.push(<td key={key}
                                  style={style}>
-                        {execute(col.field, d, (node: ReactNode) => this.onExpand(d, node), idx)}
+                        {execute(col.field, data, (node: ReactNode) => this.onExpand(data, node), index)}
                     </td>)
                 } else {
                     tds.push(<td key={key} style={style}>{col.field + ""}</td>)
                 }
             });
-            trs.push(<tr key={`tr${d.id}`}>{tds}</tr>);
-            if (this.state.expandId && this.state.expandId === d.id) {
-                trs.push(<tr className="hui-table-expand" key={`expand${d.id}`}>
+            trs.push(<tr key={`tr${data.id}`}>{tds}</tr>);
+            if (this.state.expandId && this.state.expandId === data.id) {
+                trs.push(<tr className="hui-table-expand" key={`expand${data.id}`}>
                     <td colSpan={this.state.columns.length + (this.props.selectable ? 1 : 0)}>{this.expandElement}</td>
                 </tr>)
             }
