@@ -10,6 +10,8 @@ import {Menu} from "./src/components/Menu";
 import {Notifications} from "./src/components/Notifications";
 import {Icon} from "./src/components/Icon";
 import {ListView} from "./src/components/ListView";
+import {Select} from "./src/components/Select";
+import {SelectOption} from "./src/components/SelectOption";
 
 const colorMap: ColorType[] = [
     "",
@@ -163,4 +165,7 @@ ReactDOM.render(<div>
         },
         {label: "3333333333", icon: <Icon name={'cog'}/>}
     ]}/>
+    <Select>
+        <SelectOption value={"111"}>111</SelectOption>
+    </Select>
 </div>, document.body);
