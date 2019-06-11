@@ -60,7 +60,7 @@ ReactDOM.render(<div>
             ]
         }
     ]}/>
-    <button onClick={e => Dialog.confirm(<form id={guid()} className='hui-dialog-content'>
+    <button className="hui-btn" onClick={e => Dialog.confirm(<form id={guid()} className='hui-dialog-content'>
         <p>代码语言：
             <Selector data={[
                 {text: 'Java', value: 'java'},
@@ -91,7 +91,7 @@ ReactDOM.render(<div>
     </button>
     <SwitchBox on={true}/>
     <Selector placeholder={'Please select'} data={data} onChange={console.log} className='hui-input'/>
-    <button onClick={e => Menu.show([
+    <button className="hui-btn" onClick={e => Menu.show([
         {
             type: "menu",
             text: "Menu 1",
@@ -133,13 +133,13 @@ ReactDOM.render(<div>
         }
     ])}>Menu
     </button>
-    <button onClick={e => Notifications.send({
+    <button className="hui-btn" onClick={e => Notifications.send({
         title: "这是标题",
         message: "这是一段内容一段内容一段内容一段内容一段内容一段内容",
         showClose: false
     })}>notification
     </button>
-    <button onClick={e => Notifications.send({
+    <button className="hui-btn" onClick={e => Notifications.send({
         title: "这是标题",
         message: "这是一段内容一段内容一段内容一段内容一段内容一段内容",
         icon: <Icon name={"cog"}/>, actions: [
@@ -154,8 +154,8 @@ ReactDOM.render(<div>
         ]
     })}>notification with icon
     </button>
-    <button onClick={e => Notifications.toggleFold()}>toggle({Notifications.count()})</button>
-    <button onClick={e => Notifications.success(guid(), "", {id: "111111"})}>error</button>
+    <button className="hui-btn" onClick={e => Notifications.toggleFold()}>toggle({Notifications.count()})</button>
+    <button className="hui-btn" onClick={e => Notifications.success(guid(), "", {id: "111111"})}>error</button>
     <ListView items={[
         {label: "11111111", icon: <Icon name={'cog'}/>},
         {
@@ -165,7 +165,7 @@ ReactDOM.render(<div>
         },
         {label: "3333333333", icon: <Icon name={'cog'}/>}
     ]}/>
-    <Select>
+    <Select placeholder={"lsdkjflsdkjf"}>
         <SelectOption value={"111"}>111</SelectOption>
     </Select>
-</div>, document.body);
+</div>, document.getElementById("root"));

@@ -1,7 +1,10 @@
 import * as React from "react";
+import {ReactNode} from "react";
 
 export interface SelectOptionProps {
     value?: string
+    children: ReactNode
+    key?: string
 }
 
 export class SelectOption extends React.Component<SelectOptionProps> {
@@ -10,6 +13,6 @@ export class SelectOption extends React.Component<SelectOptionProps> {
     }
 
     render() {
-        return null;
+        return ''
     }
 }

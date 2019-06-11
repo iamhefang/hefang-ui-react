@@ -1,29 +1,62 @@
 import * as React from "react";
+import {ReactElement} from "react";
 import {Icon} from "./Icon";
 import {execute} from "hefang-js";
+import {Empty} from "./Empty";
+import {SelectOptionProps} from "./SelectOption";
 
 export interface SelectProps<T> {
     value?: T
     defaultValue?: T
+    placeholder?: string
     onChange?: (value?: T) => void | boolean
     filterOption?: (inputValue: string) => boolean
+    children?: Array<ReactElement<SelectOptionProps>>
 }
 
 interface State {
     dropdown: boolean
+    items: Array<SelectOptionProps>
+}
+
+function handleOptions(options: Array<ReactElement<SelectOptionProps>>) {
+    return options.map(opt => opt.props)
 }
 
 export class Select<T> extends React.Component<SelectProps<T>, State> {
+    static readonly defaultProps = {children: []};
+
     constructor(props) {
         super(props);
+        this.state = {
+            dropdown: true,
+            items: handleOptions(props.children)
+        };
     }
 
+    static getDerivedStateFromProps(props: SelectProps<any>, state) {
+        return {items: handleOptions(props.children || [])}
+    }
+
+    private renderItem = (item: SelectOptionProps) => {
+        return <li key={'select-li-' + item.key}>{item.children}</li>
+    };
+
     render() {
-        return <div className="hui-select display-flex-row hui-input">
-            <div className="flex-1">
-                <input type="text" onChange={e => execute(this.props.filterOption, e.currentTarget.value)}/>
+        return <div className="hui-select-container" data-open={this.state.dropdown}>
+            <div className="display-flex-row hui-input hui-select">
+                <div className="flex-1">
+                    <input type="text" className="no-border"
+                           placeholder={this.props.placeholder}
+                           onFocus={e => this.setState({dropdown: true})}
+                           onBlur={e => this.setState({dropdown: false})}
+                           onChange={e => execute(this.props.filterOption, e.currentTarget.value)}/>
+                </div>
+                <Icon name={'angle-down'} className="hui-select-arrow"/>
             </div>
-            <Icon name={'angle-down'}/>
+            <div className="hui-select-dropdown">
+                {this.state.items.length ? <ul>{this.state.items.map(this.renderItem)}</ul> : <Empty/>}
+            </div>
         </div>;
     }
 }
