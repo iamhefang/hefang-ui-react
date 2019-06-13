@@ -167,5 +167,6 @@ ReactDOM.render(<div>
     ]}/>
     <Select placeholder={"lsdkjflsdkjf"}>
         <SelectOption value={"111"}>111</SelectOption>
+        <SelectOption value={"222"}>222</SelectOption>
     </Select>
 </div>, document.getElementById("root"));

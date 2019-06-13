@@ -30,7 +30,7 @@ export class Select<T> extends React.Component<SelectProps<T>, State> {
         super(props);
         this.state = {
             dropdown: true,
-            items: handleOptions(props.children)
+            items: handleOptions(Array.isArray(props.children) ? props.children : [props.children])
         };
     }
 
@@ -38,18 +38,30 @@ export class Select<T> extends React.Component<SelectProps<T>, State> {
         return {items: handleOptions(props.children || [])}
     }
 
-    private renderItem = (item: SelectOptionProps) => {
-        return <li key={'select-li-' + item.key}>{item.children}</li>
+    private onWindowBlur = () => {
+    };
+
+    componentDidMount(): void {
+        window.addEventListener("blur", this.onWindowBlur);
+    }
+
+    componentWillUnmount(): void {
+        window.removeEventListener("blur", this.onWindowBlur)
+    }
+
+    private renderItem = (item: SelectOptionProps, index: number) => {
+        return <li key={'select-li-' + (item.key || index)}>{item.children}</li>
     };
 
     render() {
-        return <div className="hui-select-container" data-open={this.state.dropdown}>
+        return <div className="hui-select-container"
+                    onFocus={e => this.setState({dropdown: true})}
+                    onBlur={e => this.setState({dropdown: false})}
+                    data-open={this.state.dropdown}>
             <div className="display-flex-row hui-input hui-select">
                 <div className="flex-1">
                     <input type="text" className="no-border"
                            placeholder={this.props.placeholder}
-                           onFocus={e => this.setState({dropdown: true})}
-                           onBlur={e => this.setState({dropdown: false})}
                            onChange={e => execute(this.props.filterOption, e.currentTarget.value)}/>
                 </div>
                 <Icon name={'angle-down'} className="hui-select-arrow"/>
