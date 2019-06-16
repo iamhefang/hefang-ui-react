@@ -89,7 +89,7 @@ ReactDOM.render(<div>
         width: 500, height: 500, maximizable: true, doubleClickTitle2Max: true
     })}>Alert
     </button>
-    <SwitchBox on={true}/>
+    <SwitchBox checked={true}/>
     <Selector placeholder={'Please select'} data={data} onChange={console.log} className='hui-input'/>
     <button className="hui-btn" onClick={e => Menu.show([
         {

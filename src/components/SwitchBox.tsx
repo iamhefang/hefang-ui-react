@@ -8,7 +8,8 @@ export interface SwitchState {
 }
 
 export interface SwitchProps {
-    on?: boolean
+    defaultChecked?: boolean
+    checked?: boolean
     id?: string
     name?: string
     onChange?: OnSwitchChange
@@ -17,14 +18,15 @@ export interface SwitchProps {
 
 export class SwitchBox extends React.Component<SwitchProps, SwitchState> {
     static readonly defaultProps: SwitchProps = {
-        on: false,
+        checked: false,
+        defaultChecked: false,
         type: ""
     };
 
     constructor(props: SwitchProps) {
         super(props);
         this.state = {
-            checked: props.on
+            checked: props.defaultChecked
         };
     }
 
@@ -34,9 +36,13 @@ export class SwitchBox extends React.Component<SwitchProps, SwitchState> {
         }
     };
 
+    static getDerivedStateFromProps(props: SwitchProps) {
+        return {checked: props.checked}
+    }
+
     componentWillReceiveProps(props: SwitchProps) {
         this.setState({
-            checked: props.on
+            checked: props.checked
         })
     }
 
@@ -44,8 +50,7 @@ export class SwitchBox extends React.Component<SwitchProps, SwitchState> {
         const {id, name, type} = this.props;
         return <input type="checkbox" className={`hui-switch${type ? `-${type}` : ""}`}
                       onChange={this.onChange}
-                      id={id}
-                      checked={this.state.checked}
-                      name={name}/>
+                      id={id} name={name}
+                      checked={this.state.checked}/>
     }
 }

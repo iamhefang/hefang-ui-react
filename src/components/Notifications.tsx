@@ -169,7 +169,7 @@ export class Notifications extends React.Component<NotificationProps, State> {
             </div> : null}
             <div className="hui-notification-body flex-1">
                 <div className="hui-notification-title">{this.props.title}</div>
-                <div className="hui-notification-message">{this.props.message}{this.props.id}</div>
+                <div className="hui-notification-message">{this.props.message}</div>
                 <div className="hui-notification-actions text-right">
                     {this.props.actions.map(
                         btn => <button className={btn.className}
