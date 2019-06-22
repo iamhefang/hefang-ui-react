@@ -9,8 +9,10 @@ export interface EmptyProps {
 }
 
 export function Empty(props: EmptyProps) {
-    return <div className="text-center" style={{color: 'gray'}}>
-        {props.icon || <Icon name={'inbox'} size={IconSize._4x}/>}
-        <p>{props.description || "暂无数据"}</p>
+    return <div className="text-center hui-empty">
+        <div className="hui-empty-icon">
+            {props.icon || <Icon name={'inbox'} size={IconSize._4x}/>}
+        </div>
+        <p className='hui-empty-desc'>{props.description || "暂无数据"}</p>
     </div>
 }

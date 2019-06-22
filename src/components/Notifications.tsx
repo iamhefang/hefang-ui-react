@@ -4,7 +4,6 @@ import {execute, guid, extend} from "hefang-js";
 import {div} from "../functions/dom";
 import {render} from "react-dom";
 import {Icon} from "./Icon";
-import Timeout = NodeJS.Timeout;
 
 
 export interface NotificationProps extends NotificationOptions {
@@ -35,7 +34,7 @@ interface State {
 const containerId = "notification" + guid()
     , containerKey = Symbol("NotificationContainerKey")
     , propsPool: { [key: string]: NotificationOptions } = {}
-    , timerPool: { [key: string]: Timeout } = {};
+    , timerPool: { [key: string]: any } = {};
 let updateTimer;
 
 export class Notifications extends React.Component<NotificationProps, State> {
