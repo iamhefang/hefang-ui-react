@@ -1,0 +1,48 @@
+html, body {
+  background: gray;
+}
+
+$nav-height: 50px;
+#navbar, #side, #main {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  transition: all .35s ease;
+}
+
+#navbar {
+  height: $nav-height;
+  line-height: $nav-height;
+  background: black;
+}
+
+#side {
+  width: 200px;
+  background: white;
+  top: $nav-height;
+  bottom: 0;
+  padding-bottom: 50px;
+
+  .toggle-btn {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+  }
+}
+
+#main {
+  left: 200px;
+}
+
+[data-open=false] {
+  #side {
+    width: 40px;
+  }
+
+  #main {
+    left: 40px;
+  }
+}

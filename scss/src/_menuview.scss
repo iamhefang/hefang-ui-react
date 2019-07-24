@@ -1,0 +1,45 @@
+@import "variables";
+@import "../libs/prefixes";
+
+.#{$prefix}menuview {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  &[data-size=small] {
+    .#{$prefix}menuview-item {
+      height: $menuview-height*.8;
+      line-height: $menuview-height*.8;
+
+    }
+
+    .#{$prefix}menuview-icon {
+      width: $menuview-height*.8;
+      text-align: center;
+    }
+  }
+
+  &[data-size=large] {
+    .#{$prefix}menuview-item {
+      height: $menuview-height*1.2;
+      line-height: $menuview-height*1.2;
+
+    }
+
+    .#{$prefix}menuview-icon {
+      width: $menuview-height*1.2;
+      text-align: center;
+    }
+  }
+
+  &-item {
+    height: $menuview-height;
+    line-height: $menuview-height;
+
+  }
+
+  &-icon {
+    width: $menuview-height;
+    text-align: center;
+  }
+}
