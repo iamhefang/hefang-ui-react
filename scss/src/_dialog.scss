@@ -1,0 +1,147 @@
+@import "variables";
+@import "../libs/prefixes";
+
+.#{$prefix}dialog {
+  position: fixed;
+  box-shadow: 0 0 1rem $border-color;
+  overflow: hidden;
+  min-width: $dialog-min-width;
+  min-height: $dialog-min-height;
+  background: white;
+  z-index: $z-index-dialog;
+  @include animation(fade-in .35s ease);
+  @include border-radius($border-radius);
+
+  &[data-moving=true] {
+    iframe {
+      visibility: hidden;
+    }
+  }
+
+  &[data-movable=true] {
+    .#{$prefix}dialog-header {
+      cursor: move;
+    }
+  }
+
+  &[data-shake] {
+    @include animation(shake .15s infinite linear)
+  }
+
+  &-icon {
+    padding: 0 .5rem;
+  }
+
+  &-header, &-footer {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    box-sizing: border-box;
+    z-index: 2;
+  }
+
+  &-header {
+    @extend .no-select;
+    top: 0;
+    padding: 0 .5rem;
+    border-bottom: thin solid $border-color;
+    height: $dialog-header-height;
+    line-height: $dialog-header-height;
+    background: white;
+    button {
+      padding: .3rem;
+    }
+  }
+
+  &-title {
+    @extend .mp-0;
+    display: inline-block;
+    font: {
+      size: 1rem;
+      weight: bold;
+    }
+  }
+
+  &-controls {
+    display: inline-block;
+    float: right;
+  }
+
+  &-body {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    padding: {
+      top: $dialog-header-height;
+      bottom: $dialog-footer-height;
+    }
+    z-index: 1;
+    overflow: hidden;
+  }
+
+  &-content {
+    padding: 1rem;
+    line-height: 1.5;
+    overflow: auto;
+    @include box-sizing(border-box);
+    @each $elem in (h1, h2, h3, h4, h5, h6, p) {
+      #{$elem} {
+        padding: 0;
+        margin: 0;
+      }
+    }
+    @at-root {
+      iframe#{&} {
+        @extend .border-0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
+
+  &-footer {
+    bottom: 0;
+    padding: 0 1rem;
+    height: $dialog-footer-height;
+    line-height: $dialog-footer-height;
+    background: #fcfcfc;
+    @extend .text-right;
+    z-index: 1;
+    button + button {
+      margin-left: .5rem;
+    }
+  }
+  @at-root {
+    &-resizable {
+      @extend .#{$prefix}dialog;
+      resize: both;
+      &:after {
+        $border: 1px solid #9e9e9e;
+        content: ' ';
+        cursor: nwse-resize;
+        position: absolute;
+        right: -0.65rem;
+        bottom: 0;
+        height: 2px;
+        width: 2rem;
+        border: $border {
+          left: none;
+          right: none;
+        }
+        @include transform(rotate(-45deg));
+        z-index: 2;
+      }
+    }
+
+    &-maximize {
+      @extend .#{$prefix}dialog;
+      top: 0 !important;
+      left: 0 !important;
+      height: 100% !important;
+      width: 100% !important;
+      resize: none;
+      z-index: 25;
+    }
+  }
+}

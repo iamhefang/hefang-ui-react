@@ -13,14 +13,16 @@ export interface TagProps {
 }
 
 export function Tag(props: TagProps) {
-    return <div className="hui-tag" onClick={e => execute(props.onClick, props.text)}>
-        <div className="display-flex-row" data-size={props.size}>
-            <span className="flex-1">{props.text}</span>
-            {props.removable ?
-                <button className="no-background no-border hui-tag-remove"
-                        onClick={e => execute(props.onRemove, props.text)}>
-                    ×
-                </button> : null}
-        </div>
-    </div>;
+    return <span
+        className={`hui-tag${props.type ? "-" + props.type : ""}`}
+        data-removable={props.removable}
+        onClick={e => execute(props.onClick, props.text)} data-size={props.size}>
+           {props.text}
+        {props.removable ?
+            <button
+                className="no-background no-border hui-tag-remove"
+                onClick={e => execute(props.onRemove, props.text)}>
+                ×
+            </button> : null}
+    </span>;
 }

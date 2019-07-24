@@ -6,4 +6,5 @@ export interface ListViewItemModel {
     id?: string
     url?: string
     child?: ListViewItemModel[]
+    extra?: ReactNode
 }

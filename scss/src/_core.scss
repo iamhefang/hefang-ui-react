@@ -1,0 +1,144 @@
+@import "variables";
+@import "../libs/prefixes";
+
+:root {
+  --blue: $color-blue;
+  --indigo: $color-indigo;
+  --purple: $color-purple;
+  --pink: $color-pink;
+  --red: $color-red;
+  --orange: $color-orange;
+  --yellow: $color-yellow;
+  --green: $color-green;
+  --teal: $color-teal;
+  --cyan: $color-cyan;
+  --white: $color-white;
+  --gray: $color-gray;
+  --gray-dark: $color-gray;
+  --primary: $color-primary;
+  --secondary: $color-secondary;
+  --success: $color-success;
+  --info: $color-info;
+  --warning: $color-warning;
+  --danger: $color-danger;
+  --light: $color-light;
+  --dark: $color-dark;
+  --breakpoint-xs: $breakpoint-xs;
+  --breakpoint-sm: $breakpoint-sm;
+  --breakpoint-md: $breakpoint-md;
+  --breakpoint-lg: $breakpoint-lg;
+  --breakpoint-xl: $breakpoint-xl;
+  --font-family-sans-serif: $font-family-sans-serif;
+  --font-family-monospace: $font-family-monospace;
+}
+
+html, body {
+  font-family: $font-family-sans-serif;
+}
+
+pre, code, kbd, samp {
+  font-family: $font-family-monospace;
+  font-size: 1em; /* 2 */
+}
+
+a {
+  color: $color-blue;
+  &:active {
+    color: $color-red;
+  }
+}
+
+:focus {
+  outline: none;
+}
+
+/* 浮动 */
+.float {
+  @each $direction in (left, right, none) {
+    &-#{$direction} {
+      float: $direction;
+    }
+  }
+}
+
+/* 对齐 */
+.text {
+  @each $direction in (left, center, right) {
+    &-#{$direction} {
+      text-align: $direction;
+    }
+  }
+}
+
+.display {
+  &-flex {
+    @each $flex in (row, column, row-reverse, column-reverse) {
+      &-#{$flex} {
+        @include display-flex();
+        @include flex-direction($flex);
+      }
+    }
+  }
+  @each $display in (block, none, table, inline-block, inline, grid, table-caption, table-cell, table-column) {
+    &-#{$display} {
+      display: $display;
+      @if ($display == block) {
+        width: 100%;
+      }
+    }
+  }
+}
+
+.flex {
+  @for $i from 1 through 3 {
+    &-#{$i} {
+      @include flex($i) ;
+    }
+  }
+}
+
+@each $attr in (margin, padding, border, border-radius) {
+  @at-root {
+    .#{$attr}-0 {
+      #{$attr}: 0;
+    }
+  }
+}
+
+.mp-0 {
+  @extend .margin-0;
+  @extend .padding-0;
+}
+
+.no {
+  &-select {
+    @include user-select(none)
+  }
+  @each $no in (resize, border, background) {
+    &-#{$no} {
+      #{$no}: none;
+    }
+  }
+}
+
+.intent-2 {
+  text-indent: 2em;
+}
+
+/* 遮罩层 */
+.#{$prefix}mask {
+  position: fixed;
+  z-index: $z-index-mask;
+  top: 0;
+  width: 100%;
+  bottom: 0;
+  height: 100%;
+  $alpha: 0;
+  @while ($alpha <= 90) {
+    &-#{$alpha} {
+      @extend .#{$prefix}mask;
+      background: rgba(100, 100, 100, $alpha/100);
+    }
+    $alpha: $alpha + 10;
+  }
+}

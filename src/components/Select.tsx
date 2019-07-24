@@ -46,7 +46,7 @@ export class Select<T> extends React.Component<SelectProps<T>, State> {
     }
 
     componentWillUnmount(): void {
-        window.removeEventListener("blur", this.onWindowBlur)
+        window.removeEventListener("blur", this.onWindowBlur);
     }
 
     private renderItem = (item: SelectOptionProps, index: number) => {

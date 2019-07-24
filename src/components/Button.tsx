@@ -23,7 +23,8 @@ export class Button extends React.Component<ButtonProps, ButtonState> {
         theme: "",
         loading: false,
         text: '',
-        disabled: false
+        disabled: false,
+        className: "hui-btn"
     };
 
     constructor(props: ButtonProps) {

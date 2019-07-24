@@ -12,9 +12,9 @@ import {Icon} from "./src/components/Icon";
 import {ListView} from "./src/components/ListView";
 import {Select} from "./src/components/Select";
 import {SelectOption} from "./src/components/SelectOption";
+import {Tag} from "./src/components/Tag";
 
 const colorMap: ColorType[] = [
-    "",
     "primary",
     "secondary",
     "success",
@@ -159,14 +159,44 @@ ReactDOM.render(<div>
     <ListView items={[
         {label: "11111111", icon: <Icon name={'cog'}/>},
         {
-            label: "q2222222222", child: [
+            label: "q2222222222",
+            child: [
                 {label: "4444444444444444"}
-            ], icon: <Icon name={'cog'}/>
+            ],
+            icon: <Icon name={'cog'}/>
         },
         {label: "3333333333", icon: <Icon name={'cog'}/>}
     ]}/>
+    <ListView items={[
+        {label: "11111111", icon: <Icon name={'cog'}/>},
+        {
+            label: "q2222222222",
+            child: [
+                {label: "4444444444444444"}
+            ],
+            icon: <Icon name={'cog'}/>
+        },
+        {label: "3333333333", icon: <Icon name={'cog'}/>}
+    ]} size={"small"}/>
+    <ListView items={[
+        {label: "11111111", icon: <Icon name={'cog'}/>, extra: <Tag text={"99"}/>},
+        {
+            label: "q2222222222",
+            child: [
+                {label: "4444444444444444"}
+            ],
+            icon: <Icon name={'cog'}/>
+        },
+        {label: "3333333333", icon: <Icon name={'cog'}/>}
+    ]} size={"large"}/>
     <Select placeholder={"lsdkjflsdkjf"}>
         <SelectOption value={"111"}>111</SelectOption>
         <SelectOption value={"222"}>222</SelectOption>
     </Select>
+
+    <div style={{padding: 30}}>
+        <Tag text={'111'} removable={true}/>
+        {colorMap.map(color => <Tag text={color} type={color}/>)}
+    </div>
+
 </div>, document.getElementById("root"));

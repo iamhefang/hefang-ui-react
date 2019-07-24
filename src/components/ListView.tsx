@@ -1,18 +1,19 @@
 import * as React from "react";
 import {OnListItemClick} from "../types/OnListItemClick";
 import {ListViewItemModel} from "../models/ListViewItemModel";
-import {ReactText} from "react";
+import {InputSize} from "../enums/InputSize";
+import {execute} from "hefang-js";
 
 export interface ListViewProps {
     onClick?: OnListItemClick
     items: ListViewItemModel[]
-    itemHeight?: ReactText
+    size?: InputSize
 }
 
 export class ListView extends React.Component<ListViewProps> {
     static readonly defaultProps: ListViewProps = {
-        itemHeight: '45px',
-        items: []
+        items: [],
+        size: "default"
     };
 
     constructor(props) {
@@ -21,20 +22,20 @@ export class ListView extends React.Component<ListViewProps> {
     }
 
     private renderListItem = (item: ListViewItemModel) => {
-        const Tag = item.url ? "a" : "span";
+        const RealTag = item.url ? "a" : "span"
+            , props = item.url ? {href: item.url} : {};
         return <li>
-            <Tag className="display-flex-row hui-listview-item" href={item.url}
-                 style={{height: this.props.itemHeight, lineHeight: this.props.itemHeight}}>
+            <RealTag
+                className="display-flex-row hui-listview-item" {...props}
+                onClick={e => execute(this.props.onClick, item)}>
                 <div className="hui-listview-icon">
                     {item.icon}
                 </div>
                 <div className="flex-1">
                     {item.label}
                 </div>
-                <div>
-
-                </div>
-            </Tag>
+                {item.extra ? <div>{item.extra}</div> : null}
+            </RealTag>
             {item.child && item.child.length ? <ul className="hui-listview">
                 {item.child.map(this.renderListItem)}
             </ul> : null}
@@ -43,7 +44,7 @@ export class ListView extends React.Component<ListViewProps> {
 
     render() {
         return (
-            <ul className="hui-listview">
+            <ul className="hui-listview" data-size={this.props.size}>
                 {this.props.items.map(this.renderListItem)}
             </ul>
         );

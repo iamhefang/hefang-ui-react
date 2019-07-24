@@ -1,5 +1,1 @@
-export enum InputSize {
-    small = 'small',
-    default = 'default',
-    large = 'large'
-}
+export type InputSize = "large" | "small" | "default"

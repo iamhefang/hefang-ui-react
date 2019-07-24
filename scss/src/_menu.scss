@@ -1,0 +1,50 @@
+@import "variables";
+
+.#{$prefix}menu {
+  @extend .mp-0;
+  display: inline-block;
+  box-shadow: 3px 3px 1rem rgba(0, 0, 0, 0.54);
+  border-radius: .2rem;
+  background: #f4f4f4;
+  padding: .5rem 0;
+
+  .#{$prefix}menu {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 100%;
+  }
+
+  &-item {
+    list-style: none;
+    height: $menu-item-height;
+    line-height: $menu-item-height;
+
+    .#{$prefix}icon {
+      height: $menu-item-height;
+      line-height: $menu-item-height;
+      width: $menu-item-height;
+      text-align: center;
+    }
+
+    position: relative;
+    min-width: 8rem;
+
+    &:hover {
+      & > .#{$prefix}menu {
+        display: inline-block;
+      }
+
+      & > .#{$prefix}menu-label {
+        background: red;
+        color: white;
+      }
+    }
+  }
+
+  &-separator {
+    height: 0;
+    border-top: 1px solid #8a8a8a;
+    margin: 3px 0;
+  }
+}
