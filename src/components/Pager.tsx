@@ -1,7 +1,7 @@
 import * as React from "react";
 import {ReactText} from "react";
 import {PagerOnChange} from "../types/PagerOnChange";
-import {execute, range, type, Types} from "hefang-js";
+import {execute, range, type} from "hefang-js";
 import {PagerHrefFunction} from "../types/PagerHrefFunction";
 import {Toast} from "./Toast";
 import {IPager} from "../interfaces/IPager";
@@ -37,7 +37,7 @@ function calcState(props: PagerProps): PagerState {
 function makeHref(props: PagerProps, index: number, pageSize: number) {
     if (!props.href) return "javascript:;";
     let href = "";
-    if (type(props.href) === Types.Function) {
+    if (type(props.href) === "Function") {
         href = execute(this.props.href, index, pageSize) || href
     } else {
         href = (this.props.href + "").replace("${pageIndex}", index + "").replace("${pageSize}", pageSize + "")

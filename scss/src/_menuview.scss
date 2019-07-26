@@ -1,0 +1,138 @@
+@import "variables";
+@import "../libs/prefixes";
+
+.#{$prefix}menuview {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	background: white;
+
+	.#{$prefix}menuview {
+		display: none;
+	}
+
+	& > li {
+		position: relative;
+	}
+
+	&-item {
+		height: $menuview-height;
+		line-height: $menuview-height;
+	}
+
+	&-icon {
+		width: $menuview-height;
+		text-align: center;
+	}
+
+	&-pophead {
+		font-weight: bold;
+		display: none;
+	}
+
+	[data-active="true"] {
+		background: #e6e6e6;
+
+		.#{$prefix}menuview {
+			display: block;
+			position: relative;
+			background: inherit;
+		}
+	}
+
+	[data-active="false"] {
+		&:hover {
+			.#{$prefix}menuview {
+				display: block;
+			}
+		}
+
+		.#{$prefix}menuview {
+			min-width: max-content;
+			display: none;
+			position: absolute;
+			left: 100%;
+			top: 0;
+
+			.#{$prefix}menuview {
+				&-icon {
+					display: none;
+				}
+
+				&-label {
+					padding: 0 10px;
+				}
+
+				&-label, &-extra {
+					display: block;
+				}
+			}
+		}
+	}
+
+	&[data-open="false"] {
+
+		.#{$prefix}menuview {
+			min-width: max-content;
+			display: none;
+			position: absolute;
+			left: 100%;
+			top: 0;
+
+			&-label, &-extra {
+				display: none;
+			}
+
+			.#{$prefix}menuview {
+				&-icon {
+					display: none;
+				}
+
+				&-label {
+					padding: 0 10px;
+				}
+
+				&-label, &-extra {
+					display: block;
+				}
+			}
+		}
+
+		li {
+			&:hover {
+				.#{$prefix}menuview {
+					display: block;
+
+					&-pophead {
+						display: block;
+					}
+				}
+			}
+		}
+	}
+
+	&[data-size="small"] {
+		.#{$prefix}menuview-item {
+			height: $menuview-height*.8;
+			line-height: $menuview-height*.8;
+		}
+
+		.#{$prefix}menuview-icon {
+			width: $menuview-height*.8;
+			text-align: center;
+		}
+	}
+
+	&[data-size="large"] {
+		.#{$prefix}menuview-item {
+			height: $menuview-height*1.2;
+			line-height: $menuview-height*1.2;
+
+		}
+
+		.#{$prefix}menuview-icon {
+			width: $menuview-height*1.2;
+			text-align: center;
+		}
+	}
+}

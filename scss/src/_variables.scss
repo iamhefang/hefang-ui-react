@@ -1,0 +1,70 @@
+@import "functions";
+
+$version: '1.0';
+
+$prefix: hui-;
+
+$input-height-small: 24px;
+$input-height-default: 32px;
+$input-height-large: 40px;
+
+$border-radius: .2rem;
+$border-color: #dcdcdc;
+
+$z-index-dialog: 200;
+$z-index-mask: 100;
+
+$dialog-header-height: 3rem;
+$dialog-footer-height: 3rem;
+$dialog-min-width: 14rem;
+$dialog-min-height: 10rem;
+
+$menu-item-height: 1.8rem;
+
+$switch-size: 1.6rem;
+
+$menuview-height: 32px;
+
+$table-header-height: 40px;
+$table-border-color: #efefef;
+
+$color-blue: #007bff;
+$color-indigo: #6610f2;
+$color-purple: #6f42c1;
+$color-pink: #e83e8c;
+$color-red: #dc3545;
+$color-orange: #fd7e14;
+$color-yellow: #ffc107;
+$color-green: #28a745;
+$color-teal: #20c997;
+$color-cyan: #17a2b8;
+$color-white: #fff;
+$color-gray: #6c757d;
+$color-gray-dark: #343a40;
+$color-primary: #007bff;
+$color-secondary: #6c757d;
+$color-success: #28a745;
+$color-info: #17a2b8;
+$color-warning: #ffc107;
+$color-danger: #dc3545;
+$color-light: #f8f9fa;
+$color-dark: #343a40;
+
+$breakpoint-xs: 0;
+$breakpoint-sm: px2rem(576);
+$breakpoint-md: px2rem(768);
+$breakpoint-lg: px2rem(992);
+$breakpoint-xl: px2rem(1200);
+$font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Microsoft YaHei", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+$font-family-monospace: Consolas, SFMono-Regular, Menlo, Monaco, "Liberation Mono", "Courier New", monospace;
+
+$colorMap: (
+        primary: $color-primary,
+        secondary: $color-secondary,
+        success: $color-success,
+        info: $color-info,
+        warning: $color-warning,
+        danger: $color-danger,
+        light: $color-light,
+        dark: $color-dark
+);

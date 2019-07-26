@@ -1,13 +1,14 @@
 import {Configuration} from "webpack";
 import * as path from "path";
 //
-// const DtsPlugin = require('dts-webpack-plugin');
-
 const config: Configuration = {
-    entry: "./index.tsx",
+    entry: {
+        "hefang-ui": "./index.tsx",
+        "example": "./example.tsx"
+    },
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: "./index.js",
+        filename: "[name].js",
         libraryTarget: "umd",
         library: "HuiReact",
         umdNamedDefine: false
@@ -39,12 +40,6 @@ const config: Configuration = {
             amd: "hefang-js",
             root: "H"
         },
-        "jquery": {
-            commonjs: 'jquery',
-            commonjs2: 'jquery',
-            amd: "jquery",
-            root: "$"
-        }
     },
     plugins: [
         // new DtsPlugin({

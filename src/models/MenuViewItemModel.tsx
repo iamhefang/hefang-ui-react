@@ -1,9 +1,10 @@
 import {ReactNode} from "react";
 
-export interface ListViewItemModel {
+export interface MenuViewItemModel {
     icon?: ReactNode
     label: string
     id?: string
     url?: string
-    child?: ListViewItemModel[]
+    child?: MenuViewItemModel[]
+    extra?: ReactNode
 }

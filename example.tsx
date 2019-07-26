@@ -1,172 +1,97 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import {ColorType} from "./src/types/ColorType";
-import {guid, range} from "hefang-js";
-import {Dialog} from "./src/components/Dialog";
-import {SwitchBox} from "./src/components/SwitchBox";
-import {Selector} from "./src/components/Selector";
-import {SelectorItem} from "./src/models/SelectorItem";
-import {Menu} from "./src/components/Menu";
-import {Notifications} from "./src/components/Notifications";
+import {MenuView} from "./src/components/MenuView";
 import {Icon} from "./src/components/Icon";
-import {ListView} from "./src/components/ListView";
-import {Select} from "./src/components/Select";
-import {SelectOption} from "./src/components/SelectOption";
+import Loading from "./src/components/Loading";
+import {Empty} from "./src/components/Empty";
+import Swiper from "./src/components/Swiper";
+import {div} from "./src/functions/dom";
 
 const colorMap: ColorType[] = [
-    "",
-    "primary",
-    "secondary",
-    "success",
-    "info",
-    "warning",
-    "danger",
-    "light",
-    "dark"
+	"primary",
+	"secondary",
+	"success",
+	"info",
+	"warning",
+	"danger",
+	"light",
+	"dark"
 ];
-const data: SelectorItem[] = range(1, 20).map(idx => {
-    return {
-        text: idx + "",
-        value: idx
-    }
-});
 
-const timer = setTimeout(() => console.log("in timer"), 0);
-console.log(timer);
-clearTimeout(timer);
+interface State {
+	menuOpen: boolean
+}
 
-ReactDOM.render(<div>
-    <Menu items={[
-        {
-            type: "menu",
-            text: "Menu 1",
-            subMenu: [
-                {type: "menu", text: "Menu 1", subMenu: []},
-                {type: "menu", text: "Menu 2", subMenu: []}
-            ]
-        },
-        {type: "separator"},
-        {
-            type: "menu",
-            text: "Menu 1",
-            subMenu: [
-                {type: "menu", text: "Menu 1", subMenu: []},
-                {
-                    type: "menu", text: "Menu 2", subMenu: [
-                        {type: "menu", text: "Menu 2", subMenu: []},
-                        {type: "menu", text: "Menu 2", subMenu: []}
-                    ]
-                }
-            ]
-        }
-    ]}/>
-    <button className="hui-btn" onClick={e => Dialog.confirm(<form id={guid()} className='hui-dialog-content'>
-        <p>代码语言：
-            <Selector data={[
-                {text: 'Java', value: 'java'},
-                {value: "python", text: "Python"},
-                {value: "bash", text: "Bash"},
-                {value: "sql", text: "SQL"},
-                {value: "html", text: "HTML"},
-                {value: "xml", text: "XML"},
-                {value: "css", text: "CSS"},
-                {value: "javascript", text: "JavaScript"},
-                {value: "typescript", text: "TypeScript"},
-                {value: "makefile", text: "Makefile"},
-                {value: "rust", text: "Rust"},
-                {value: "jsx", text: "React JSX"},
-            ]}/></p>
-        <p style={{marginTop: '1rem'}}>
-            <textarea name='code' className='display-block hui-input no-resize' rows={15}/>
-        </p>
-    </form>, "插入代码块", (dialog) => {
-        const form = dialog.contentElement() as HTMLFormElement
-            , lang = form.language.value
-            , code = form.code.value;
+class Example extends React.Component<any, State> {
+	constructor(props) {
+		super(props);
+		this.state = {menuOpen: true}
+	}
 
-    }, {
-        icon: 'file-code',
-        width: 500, height: 500, maximizable: true, doubleClickTitle2Max: true
-    })}>Alert
-    </button>
-    <SwitchBox checked={true}/>
-    <Selector placeholder={'Please select'} data={data} onChange={console.log} className='hui-input'/>
-    <button className="hui-btn" onClick={e => Menu.show([
-        {
-            type: "menu",
-            text: "Menu 1",
-            onClick: alert,
-            subMenu: [
-                {
-                    type: "menu", text: "Menu 1",
-                    onClick: alert, subMenu: []
-                },
-                {
-                    type: "menu", text: "Menu 2",
-                    onClick: alert, subMenu: []
-                }
-            ]
-        },
-        {type: "separator"},
-        {
-            type: "menu",
-            text: "Menu 1",
-            onClick: alert,
-            subMenu: [
-                {
-                    type: "menu", text: "Menu 1",
-                    onClick: alert, subMenu: []
-                },
-                {
-                    type: "menu", text: "Menu 2", subMenu: [
-                        {
-                            type: "menu", text: "Menu 2",
-                            onClick: alert, subMenu: []
-                        },
-                        {
-                            type: "menu", text: "Menu 2",
-                            onClick: alert, subMenu: []
-                        }
-                    ]
-                }
-            ]
-        }
-    ])}>Menu
-    </button>
-    <button className="hui-btn" onClick={e => Notifications.send({
-        title: "这是标题",
-        message: "这是一段内容一段内容一段内容一段内容一段内容一段内容",
-        showClose: false
-    })}>notification
-    </button>
-    <button className="hui-btn" onClick={e => Notifications.send({
-        title: "这是标题",
-        message: "这是一段内容一段内容一段内容一段内容一段内容一段内容",
-        icon: <Icon name={"cog"}/>, actions: [
-            {
-                text: "确定",
-                onClick: console.log
-            },
-            {
-                text: "取消",
-                onClick: console.log
-            }
-        ]
-    })}>notification with icon
-    </button>
-    <button className="hui-btn" onClick={e => Notifications.toggleFold()}>toggle({Notifications.count()})</button>
-    <button className="hui-btn" onClick={e => Notifications.success(guid(), "", {id: "111111"})}>error</button>
-    <ListView items={[
-        {label: "11111111", icon: <Icon name={'cog'}/>},
-        {
-            label: "q2222222222", child: [
-                {label: "4444444444444444"}
-            ], icon: <Icon name={'cog'}/>
-        },
-        {label: "3333333333", icon: <Icon name={'cog'}/>}
-    ]}/>
-    <Select placeholder={"lsdkjflsdkjf"}>
-        <SelectOption value={"111"}>111</SelectOption>
-        <SelectOption value={"222"}>222</SelectOption>
-    </Select>
-</div>, document.getElementById("root"));
+	render() {
+		return <div data-open={this.state.menuOpen}>
+			<nav id="navbar"></nav>
+			<div id="side">
+				<MenuView open={this.state.menuOpen} items={[
+					{
+						icon: <Icon name="info"/>,
+						label: "关于"
+					},
+					{
+						icon: <Icon name="table"/>,
+						label: "表格",
+						child: [
+							{label: "普通表格"},
+							{label: "带分页"},
+						]
+					},
+					{
+						icon: <Icon name="qrcode"/>,
+						label: "二维码",
+						child: [
+							{label: "普通"},
+							{label: "带图标"}
+						]
+					}
+				]} size={"large"}/>
+				<button className="toggle-btn" onClick={e => this.setState({menuOpen: !this.state.menuOpen})}>
+					菜单
+				</button>
+			</div>
+			<div id="main">
+				<Loading loading={true} text="loading">
+					<h1>加载上</h1>
+					<h1>加载上</h1>
+					<h1>加载上</h1>
+					<h1>加载上</h1>
+					<h1>加载上</h1>
+					<h1>加载上</h1>
+					<h1>加载上</h1>
+					<h1>加载上</h1>
+					<h1>加载上</h1>
+				</Loading>
+				<Loading loading={true}>
+					<Empty/>
+				</Loading>
+				<Loading loading={false}>
+					<div style={{background: 'red', height: 300, width: 300}}>
+						11
+					</div>
+				</Loading>
+				<Swiper>
+					<div><h1>1</h1></div>
+					<div><h1>2</h1></div>
+					<div><h1>3</h1></div>
+					<div><h1>4</h1></div>
+					<div><h1>5</h1></div>
+					<div><h1>6</h1></div>
+					<div><h1>7</h1></div>
+					<div><h1>8</h1></div>
+				</Swiper>
+			</div>
+		</div>;
+	}
+}
+
+ReactDOM.render(<Example/>, document.getElementById("root"));

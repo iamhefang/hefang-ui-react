@@ -5,7 +5,6 @@ import {div} from "../functions/dom";
 import {render} from "react-dom";
 import {Icon} from "./Icon";
 
-
 export interface NotificationProps extends NotificationOptions {
     isClosing: boolean
 }

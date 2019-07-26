@@ -1,0 +1,90 @@
+@import "variables";
+@import "../libs/prefixes";
+
+.#{$prefix}switch {
+  display: inline-block;
+  &-box {
+    position: relative;
+    display: inline-block;
+    height: $switch-size;
+    width: $switch-size * 1.8;
+    background-color: #dfdfdf;
+    border: 2px solid #dfdfdf;
+    border-radius: $switch-size / 2 + 0.1rem;
+    box-sizing: content-box;
+    @include transition(transform .35s cubic-bezier(0.4, 0.4, 0.25, 1.35));
+    @include transition(background-color .1s, border .1s);
+  }
+  input {
+    display: none;
+    &:checked + .#{$prefix}switch-box {
+      &:before {
+        @include transform(translateX($switch-size * .8));
+      }
+      &:after {
+        @include transform(scale(0));
+      }
+    }
+  }
+  @at-root {
+    input#{&} {
+      @extend .#{$prefix}switch-box;
+      @include appearance(none);
+      &:before {
+        content: ' ';
+      }
+      &:after {
+        @include transform(scale(1));
+      }
+
+      &:checked {
+        &:before {
+          @include transform(translateX($switch-size * .8));
+        }
+        &:after {
+          @include transform(scale(0));
+        }
+      }
+
+    }
+
+    input#{&}:before, #{&}-box:before {
+      content: ' ';
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: $switch-size;
+      width: $switch-size;
+      border-radius: $switch-size / 2 + .1rem;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+      z-index: 2;
+      background: white;
+      @include transition(transform .35s cubic-bezier(0.4, 0.4, 0.25, 1.35));
+    }
+
+    input#{&}:after, #{&}-box:after {
+      content: ' ';
+      background: #fdfdfd;
+      position: absolute;
+      height: $switch-size;
+      width: $switch-size * 1.8;
+      border-radius: $switch-size / 2;
+      @include transition(transform .35s cubic-bezier(0.4, 0.4, 0.25, 1.35));
+      @include transform(scale(1));
+    }
+  }
+}
+
+@each $name, $color in $colorMap {
+  .#{$prefix}switch-#{$name} {
+    @extend .#{$prefix}switch;
+    @at-root {
+      input#{&}:checked, & input:checked + .#{$prefix}switch-box {
+        background-color: $color;
+        border-color: $color;
+      }
+    }
+  }
+
+}
+

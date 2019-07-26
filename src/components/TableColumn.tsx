@@ -1,22 +1,21 @@
 import * as React from "react";
 import {ReactNode, ReactText} from "react";
 import {TableFieldFunction} from "../types/TableFieldFunction";
-import {BaseModel} from "../interfaces/BaseModel";
 
 export interface TableColumnState {
 
 }
 
-export interface TableColumnProps<T extends BaseModel> {
+export interface TableColumnProps<T> {
     width?: ReactText
-    title: ReactNode | Function
+    title: ReactNode
     field: ReactText | TableFieldFunction<T>
     align?: "right" | "left" | "center"
     sort?: string | boolean
 }
 
-export class TableColumn<T extends BaseModel> extends React.Component<TableColumnProps<T>, TableColumnState> {
-    static readonly defaultProps: TableColumnProps<BaseModel> = {
+export class TableColumn<T> extends React.Component<TableColumnProps<T>, TableColumnState> {
+    static readonly defaultProps: TableColumnProps<any> = {
         title: null,
         field: null
     };

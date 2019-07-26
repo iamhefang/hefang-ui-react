@@ -1,10 +1,8 @@
 import * as React from "react";
 import {ReactNode} from "react";
 import * as ReactDOM from "react-dom";
-import {execute, extend, guid, noop, type, Types} from "hefang-js";
+import {execute, extend, guid, noop, type} from "hefang-js";
 import {Icon} from "./Icon";
-import {IconSize} from "../enums/IconSize";
-import {IconAnimation} from "../enums/IconAnimation";
 import {ToastOnClose} from "../types/ToastOnClose";
 import {HuiMask} from "../types/HuiMask";
 import {ColorType} from "../types/ColorType";
@@ -61,13 +59,13 @@ export class Toast {
     public static success(option: ToastProps): Toast
     public static success(message: string, option: ToastProps): Toast
     public static success(message?, option?): Toast {
-        if (type(message) === Types.Object) {
+        if (type(message) === "Object") {
             option = message;
             message = "成功"
         }
         message = message || "成功";
         return Toast.show(<div className="hui-toast-block">
-            <Icon name="check" size={IconSize._3x}/>
+            <Icon name="check" size={"3x"}/>
             <p>{message}</p>
         </div>, extend(true, {}, option))
     }
@@ -77,13 +75,13 @@ export class Toast {
     public static loading(option: ToastProps): Toast
     public static loading(message: string, option: ToastProps): Toast
     public static loading(message?, option?): Toast {
-        if (type(message) === Types.Object) {
+        if (type(message) === "Object") {
             option = message;
             message = "请稍候..."
         }
         message = message || "请稍候...";
         return Toast.show(<div className="hui-toast-block">
-            <Icon name="spinner" size={IconSize._3x} animation={IconAnimation.spin}/>
+            <Icon name="spinner" size="3x" animation="spin"/>
             <p>{message}</p>
         </div>, extend(true, {mask: 10}, option, {duration: -1, mask: 10}))
     }

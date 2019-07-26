@@ -43,12 +43,9 @@ export class Stars extends React.Component<StarsProps, StarsState> {
     render() {
         return <span className="hui-star" style={{color: this.props.color, fontSize: this.props.size}}>
             {range(1, this.props.total).map(
-                s => {
-                    return <Icon key={`star${s}`} style={{cursor: "pointer"}}
-                                 name={"star"} onClick={e => this.onChange(s)}
-                                 namespace={this.state.value < s ? "far" : "fas"}/>;
-                }
-            )}
-</span>
+                s => <Icon key={`star${s}`} style={{cursor: "pointer"}}
+                           name={"star"} onClick={e => this.onChange(s)}
+                           namespace={this.state.value < s ? "far" : "fas"}/>
+            )}</span>
     }
 }
