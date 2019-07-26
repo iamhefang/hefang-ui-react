@@ -1,0 +1,13 @@
+@import "variables";
+@import "../libs/prefixes";
+
+.#{$prefix}swiper {
+  &-container {
+    position: relative;
+    overflow: hidden;
+  }
+
+  &-item {
+    display: inline-block;
+  }
+}

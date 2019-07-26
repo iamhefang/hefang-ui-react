@@ -1,7 +1,6 @@
 import * as React from "react";
 import {ReactNode} from "react";
 import {Icon} from "./Icon";
-import {IconSize} from "../enums/IconSize";
 
 export interface EmptyProps {
     description?: ReactNode
@@ -9,8 +8,8 @@ export interface EmptyProps {
 }
 
 export function Empty(props: EmptyProps) {
-    return <div className="text-center" style={{color: 'gray'}}>
-        {props.icon || <Icon name={'inbox'} size={IconSize._4x}/>}
+    return <div className="text-center" style={{color: '#bdbdbd'}}>
+        {props.icon || <Icon name={'inbox'} size="4x"/>}
         <p>{props.description || "暂无数据"}</p>
     </div>
 }

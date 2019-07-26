@@ -84,13 +84,14 @@ export class WebView<T> extends React.Component<WebViewProps<T>, WebViewState> {
     }
 
     render() {
-        return <iframe src={this.props.url}
-                       id={this.props.id}
-                       name={this.props.name}
-                       style={this.props.style}
-                       ref={this.ref}
-                       onLoad={this.onLoad}
-                       className={this.props.className}
-                       frameBorder={this.props.frameBorder}/>
+        return <iframe
+            src={this.props.url}
+            id={this.props.id}
+            name={this.props.name}
+            style={this.props.style}
+            ref={this.ref}
+            onLoad={this.onLoad}
+            className={this.props.className}
+            frameBorder={this.props.frameBorder}/>
     }
 }

@@ -6,82 +6,95 @@ import {execute} from "hefang-js";
 import {getOrDefault} from "../functions/map";
 
 export interface MenuViewProps {
-    onClick?: OnMenuItemClick
-    items: MenuViewItemModel[]
-    size?: InputSize
-    autoFold?: boolean
-    open?: boolean
+	onClick?: OnMenuItemClick
+	items: MenuViewItemModel[]
+	size?: InputSize
+	autoFold?: boolean
+	open?: boolean
 }
 
 interface MenuViewState {
-    fold: Map<MenuViewItemModel, boolean>
-    showLabel: boolean
+	fold: Map<MenuViewItemModel, boolean>
+	showLabel: boolean
 }
 
 export class MenuView extends React.Component<MenuViewProps, MenuViewState> {
-    static readonly defaultProps: MenuViewProps = {
-        items: [],
-        size: "default",
-        autoFold: true,
-        open: true
-    };
+	static readonly defaultProps: MenuViewProps = {
+		items: [],
+		size: "default",
+		autoFold: true,
+		open: true
+	};
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            fold: new Map(),
-            showLabel: props.open
-        };
-    }
+	constructor(props) {
+		super(props);
+		this.state = {
+			fold: new Map(),
+			showLabel: props.open
+		};
+	}
 
-    private onClick = (item: MenuViewItemModel) => {
-        execute(this.props.onClick, item);
-        if (item.child && item.child.length) {
-            const {fold} = this.state
-                , current = !getOrDefault(fold, item, false);
-            if (this.props.autoFold) {
-                fold.clear();
-            }
-            fold.set(item, current);
-            this.setState({fold})
-        }
-    };
+	private onClick = (item: MenuViewItemModel) => {
+		execute(this.props.onClick, item);
+		if (item.child && item.child.length) {
+			const {fold} = this.state
+				, current = !getOrDefault(fold, item, false);
+			if (this.props.autoFold) {
+				fold.clear();
+			}
+			fold.set(item, current);
+			this.setState({fold})
+		}
+	};
 
-    componentDidUpdate(prevProps: Readonly<MenuViewProps>, prevState: Readonly<MenuViewState>, snapshot?: any): void {
-        if (prevProps.open !== this.state.showLabel) {
-            setTimeout(() => this.setState({
-                showLabel: this.props.open
-            }), 150)
-        }
-    }
+	componentDidUpdate(prevProps: Readonly<MenuViewProps>, prevState: Readonly<MenuViewState>, snapshot?: any): void {
+		const {open} = this.props;
+		if (prevProps.open !== open) {
+			if (open) {
+				setTimeout(() => this.setState({
+					showLabel: open
+				}), 150)
+			} else {
+				this.setState({showLabel: open})
+			}
+		}
+	}
 
-    private renderListItem = (item: MenuViewItemModel) => {
-        const RealTag = item.url ? "a" : "span"
-            , props = item.url ? {href: item.url} : {};
-        return <li>
-            <RealTag
-                className="display-flex-row hui-menuview-item" {...props}
-                onClick={e => this.onClick(item)}>
-                <div className="hui-menuview-icon">
-                    {item.icon}
-                </div>
-                <div className="flex-1">
-                    {item.label}
-                </div>
-                {item.extra ? <div>{item.extra}</div> : null}
-            </RealTag>
-            {item.child && item.child.length && getOrDefault(this.state.fold, item, false) ?
-                <ul className="hui-menuview">
-                    {item.child.map(this.renderListItem)}
-                </ul> : null}
-        </li>
-    };
+	private renderListTag = (item: MenuViewItemModel) => {
+		const RealTag = item.url ? "a" : "span"
+			, props = item.url ? {href: item.url} : {};
+		return <RealTag
+			className="display-flex-row hui-menuview-item" {...props}
+			onClick={e => this.onClick(item)}>
+			<div className="hui-menuview-icon">
+				{item.icon}
+			</div>
+			<div className="flex-1 hui-menuview-label">
+				{item.label}
+			</div>
+			{item.extra ? <div className="hui-menuview-extra">{item.extra}</div> : null}
+		</RealTag>
+	};
 
-    render() {
-        return (
-            <ul className="hui-menuview" data-size={this.props.size}>
-                {this.props.items.map(this.renderListItem)}
-            </ul>
-        );
-    }
+	private renderListItem = (item: MenuViewItemModel) => {
+		const active = getOrDefault(this.state.fold, item, false);
+		return <li data-active={active}>
+			{this.renderListTag(item)}
+			{item.child && item.child.length ?
+				<ul className="hui-menuview">
+					<li className="hui-menuview-pophead">
+						{this.renderListTag(item)}
+					</li>
+					{item.child.map(item => this.renderListItem(item))}
+				</ul> : null}
+		</li>
+	};
+
+	render() {
+		return (
+			<ul className="hui-menuview" data-size={this.props.size} data-open={this.props.open}>
+				{this.props.items.map(this.renderListItem)}
+			</ul>
+		);
+	}
 }

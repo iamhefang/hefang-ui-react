@@ -2,7 +2,7 @@ import * as React from "react";
 import {CSSProperties, ReactNode, ReactText, RefObject} from "react";
 import * as ReactDOM from "react-dom";
 import {Icon} from "./Icon";
-import {execute, extend, guid, isFunction, type, Types} from "hefang-js";
+import {execute, extend, guid, isFunction, type} from "hefang-js";
 import {JsObject, WebView} from "./WebView";
 import {DialogOperater} from "../interfaces/DialogOperater";
 import {IDialogOption} from "../interfaces/IDialogOption";
@@ -66,12 +66,12 @@ export class Dialog extends React.Component<DialogProps, DialogState> {
             onOk = title;
             title = defaultTitle
         }
-        if (type(title) === Types.Object) {
+        if (type(title) === "Object") {
             option = title;
             title = defaultTitle;
             onOk = undefined;
         }
-        if (type(onOk) === Types.Object) {
+        if (type(onOk) === "Object") {
             option = onOk;
             onOk = undefined;
         }
@@ -110,15 +110,15 @@ export class Dialog extends React.Component<DialogProps, DialogState> {
             onOk = title;
             title = defaultTitle
         }
-        if (type(title) === Types.Object) {
+        if (type(title) === "Object") {
             option = title;
             title = defaultTitle;
         }
-        if (type(onOk) === Types.Object) {
+        if (type(onOk) === "Object") {
             option = onOk;
             onOk = undefined;
         }
-        if (type(onCancel) === Types.Object) {
+        if (type(onCancel) === "Object") {
             option = onCancel;
             onCancel = undefined;
         }
@@ -150,7 +150,7 @@ export class Dialog extends React.Component<DialogProps, DialogState> {
     public static window(url: string, title: string | boolean): DialogOperater
     public static window(url: string, title: string | boolean, option: DialogOptions): DialogOperater
     public static window(url: string, title?, option?): DialogOperater {
-        if (type(title) === Types.Object) {
+        if (type(title) === "Object") {
             option = title;
             title = true;
         }
@@ -179,7 +179,7 @@ export class Dialog extends React.Component<DialogProps, DialogState> {
     public static prompt(message: ReactNode, defaultValue: ReactText, title: string, onOk: DialogOnClose, onCancel: DialogOnClose, option: DialogPromptOption): DialogOperater
     public static prompt(message: ReactNode, defaultValue?, title?, onOk?, onCancel?, option?): DialogOperater {
         const defaultTitle = "输入框";
-        if (type(defaultValue) === Types.Function) {
+        if (type(defaultValue) === "Function") {
             option = onCancel;
             onCancel = onOk;
             onOk = defaultValue;
@@ -187,28 +187,28 @@ export class Dialog extends React.Component<DialogProps, DialogState> {
             title = defaultTitle;
         }
 
-        if (type(title) === Types.Function) {
+        if (type(title) === "Function") {
             option = onCancel;
             onCancel = onOk;
             onOk = title;
             title = defaultTitle;
         }
 
-        if (type(onCancel) === Types.Object) {
+        if (type(onCancel) === "Object") {
             option = onCancel;
             onCancel = undefined;
         }
-        if (type(onOk) === Types.Object) {
+        if (type(onOk) === "Object") {
             option = onOk;
             onOk = onCancel = undefined;
         }
-        if (type(title) === Types.Object) {
+        if (type(title) === "Object") {
             option = title;
             title = defaultTitle;
             onOk = onCancel = undefined;
         }
 
-        if (type(defaultValue) === Types.Object) {
+        if (type(defaultValue) === "Object") {
             option = defaultValue;
             title = defaultTitle;
             onOk = onCancel = undefined;
@@ -216,7 +216,7 @@ export class Dialog extends React.Component<DialogProps, DialogState> {
         }
         let form;
 
-        if (type(option) !== Types.Object) {
+        if (type(option) !== "Object") {
             option = {inputType: "text"}
         }
 
@@ -231,27 +231,29 @@ export class Dialog extends React.Component<DialogProps, DialogState> {
         option.inputType = option.inputType || "text";
 
         if (option.inputType === "textarea") {
-            form = <textarea rows={option.rows} className="hui-input display-block no-resize"
-                             id={`prompt${option.id}input`}
-                             placeholder={option.placeholder}
-                             style={{width: "15rem"}}
-                             onChange={e => {
-                                 execute(option.onChange, e.currentTarget, option.id)
-                             }}
-                             defaultValue={defaultValue} key={`prompt${option.inputType}`}
-                             maxLength={option.maxLength}/>
+            form = <textarea
+                rows={option.rows} className="hui-input display-block no-resize"
+                id={`prompt${option.id}input`}
+                placeholder={option.placeholder}
+                style={{width: "15rem"}}
+                onChange={e => {
+                    execute(option.onChange, e.currentTarget, option.id)
+                }}
+                defaultValue={defaultValue} key={`prompt${option.inputType}`}
+                maxLength={option.maxLength}/>
         } else {
             form =
-                <input max={option.max} placeholder={option.placeholder}
-                       id={`prompt${option.id}input`}
-                       key={`prompt${option.inputType}`}
-                       defaultValue={defaultValue} className="hui-input display-block"
-                       type={option.inputType}
-                       onChange={e => {
-                           execute(option.onChange, e.currentTarget, option.id)
-                       }}
-                       pattern={option.pattern}
-                       maxLength={option.maxLength}/>
+                <input
+                    max={option.max} placeholder={option.placeholder}
+                    id={`prompt${option.id}input`}
+                    key={`prompt${option.inputType}`}
+                    defaultValue={defaultValue} className="hui-input display-block"
+                    type={option.inputType}
+                    onChange={e => {
+                        execute(option.onChange, e.currentTarget, option.id)
+                    }}
+                    pattern={option.pattern}
+                    maxLength={option.maxLength}/>
         }
         const defOpt: DialogPromptOption = {
             title: title || defaultTitle,
@@ -475,7 +477,7 @@ export class Dialog extends React.Component<DialogProps, DialogState> {
                             }}
                             jsObject={js}/>;
         }
-        if (type(this.props.children) === Types.String || type(this.props.children) === Types.Number) {
+        if (type(this.props.children) === "String" || type(this.props.children) === "Number") {
             return <div className="hui-dialog-content">
                 {this.props.children}
             </div>
@@ -552,14 +554,16 @@ export class Dialog extends React.Component<DialogProps, DialogState> {
             height > 0 && (style.height = height);
         }
 
-        return <div className={className} style={style}
-                    id={`dialog${this.id}`}
-                    data-moving={this.state.moving}
-                    data-movable={this.props.movable}
-                    ref={this.refContainer}>
-            <div className="hui-dialog-header"
-                 onDoubleClick={this.onHeaderDoubleClick}
-                 onMouseDown={this.onHeaderMouseDown}>
+        return <div
+            className={className} style={style}
+            id={`dialog${this.id}`}
+            data-moving={this.state.moving}
+            data-movable={this.props.movable}
+            ref={this.refContainer}>
+            <div
+                className="hui-dialog-header"
+                onDoubleClick={this.onHeaderDoubleClick}
+                onMouseDown={this.onHeaderMouseDown}>
                 {this.renderIcon()}
                 {this.renderTitle()}
                 {this.renderControls()}
@@ -569,10 +573,11 @@ export class Dialog extends React.Component<DialogProps, DialogState> {
             </div>
             {Array.isArray(this.props.buttons) ?
                 <div className="hui-dialog-footer">{this.props.buttons.map((btn, index) =>
-                    <button className={btn.className}
-                            key={`dialogBtnKey${index}`}
-                            style={btn.style}
-                            onClick={e => execute(btn.onClick, this.dialog)}>
+                    <button
+                        className={btn.className}
+                        key={`dialogBtnKey${index}`}
+                        style={btn.style}
+                        onClick={e => execute(btn.onClick, this.dialog)}>
                         {btn.text}
                     </button>
                 )}</div> : null}

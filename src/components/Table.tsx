@@ -2,14 +2,14 @@ import * as React from "react";
 import {CSSProperties, ReactElement, ReactNode, ReactText} from "react";
 import {TableChildren} from "../types/TableChildren";
 import {TableColumnProps} from "./TableColumn";
-import {execute, type, Types} from "hefang-js";
+import {execute, type} from "hefang-js";
 import {BaseModel} from "../interfaces/BaseModel";
 import {TableOnSelected} from "../types/TableOnSelected";
 import {TableOnSort} from "../types/TableOnSort";
 import {SqlSort} from "../interfaces/SqlSort";
 import {Icon} from "./Icon";
 
-export interface TableState<T extends BaseModel> {
+export interface TableState<T> {
     columns: TableColumnProps<T>[]
     selected: { [key: string]: boolean }
     allSelected: boolean
@@ -17,7 +17,7 @@ export interface TableState<T extends BaseModel> {
     expandId: string
 }
 
-export interface TableProps<T extends BaseModel> {
+export interface TableProps<T> {
     id?: string
     className?: string
     style?: CSSProperties
@@ -37,12 +37,13 @@ export interface TableProps<T extends BaseModel> {
 
     onSelected?: TableOnSelected
     onSort?: TableOnSort
+    rowKey?: string
 }
 
-function parseChildren<T extends BaseModel>(children: TableChildren<T>, columns: TableColumnProps<T>[]) {
+function parseChildren<T>(children: TableChildren<T>, columns: TableColumnProps<T>[]) {
     if (!children) return;
     if (Array.isArray(children)) {
-        (children as ReactElement<TableColumnProps<T>>[]).forEach(item => {
+        (children as Array<ReactElement<TableColumnProps<T>>>).forEach(item => {
             parseChildren(item, columns)
         })
     } else {
@@ -50,19 +51,20 @@ function parseChildren<T extends BaseModel>(children: TableChildren<T>, columns:
     }
 }
 
-export class Table<T extends BaseModel> extends React.Component<TableProps<T>, TableState<T>> {
+export class Table<T> extends React.Component<TableProps<T>, TableState<T>> {
     static readonly defaultProps: TableProps<BaseModel> = {
         children: [],
         header: true,
         selectable: false,
         selected: [],
         data: null,
-        border: "row"
+        border: "row",
+        rowKey: "id"
     };
 
     private expandElement: ReactNode;
 
-    static getDerivedStateFromProps<T extends BaseModel>(props: TableProps<T>, state) {
+    static getDerivedStateFromProps<T>(props: TableProps<T>, state) {
         const columns: TableColumnProps<T>[] = []
             , selected = {};
         if (Array.isArray(props.selected)) {
@@ -92,30 +94,30 @@ export class Table<T extends BaseModel> extends React.Component<TableProps<T>, T
         };
     }
 
-    private onRowCheck = (id: string, checked: boolean) => {
+    private onRowCheck = (key: string, checked: boolean) => {
         let {allSelected, selected} = this.state;
 
-        if (id === "all") {
+        if (key === "all") {
             if (Array.isArray(this.props.data) && this.props.data.length > 0) {
                 for (let i = 0; i < this.props.data.length; i++) {
                     if (checked) {
-                        selected[this.props.data[i].id] = true;
+                        selected[this.props.data[i][this.props.rowKey]] = true;
                     } else {
-                        delete selected[this.props.data[i].id];
+                        delete selected[this.props.data[i][this.props.rowKey]];
                     }
                 }
                 allSelected = checked;
             }
         } else {
             if (checked) {
-                selected[id] = true;
+                selected[key] = true;
             } else {
-                delete selected[id];
+                delete selected[key];
             }
             if (Array.isArray(this.props.data) && this.props.data.length > 0) {
                 allSelected = true;
                 for (let i = 0; i < this.props.data.length; i++) {
-                    if (!(this.props.data[i].id in selected)) {
+                    if (!(this.props.data[i][this.props.rowKey] in selected)) {
                         allSelected = false;
                         break;
                     }
@@ -136,12 +138,12 @@ export class Table<T extends BaseModel> extends React.Component<TableProps<T>, T
     };
 
     private onExpand = (row: BaseModel, node: ReactNode) => {
-        if (row.id === this.state.expandId) {
+        if (row[this.props.rowKey] === this.state.expandId) {
             this.expandElement = null;
             this.setState({expandId: null})
         } else {
             this.expandElement = node;
-            this.setState({expandId: row.id})
+            this.setState({expandId: row[this.props.rowKey]})
         }
     };
 
@@ -153,8 +155,9 @@ export class Table<T extends BaseModel> extends React.Component<TableProps<T>, T
         if (this.props.selectable) {
             tds.push(<td key={"selectAll"} style={{textAlign: "center", width: "2rem"}}>
                 <label>
-                    <input type="checkbox" checked={this.state.allSelected}
-                           onChange={e => this.onRowCheck("all", e.currentTarget.checked)}/>
+                    <input
+                        type="checkbox" checked={this.state.allSelected}
+                        onChange={e => this.onRowCheck("all", e.currentTarget.checked)}/>
                 </label>
             </td>)
         }
@@ -162,12 +165,12 @@ export class Table<T extends BaseModel> extends React.Component<TableProps<T>, T
         this.state.columns.forEach((col: TableColumnProps<T>, idx) => {
             let sort = undefined, sortIcon = undefined, cursor = undefined;
             if (col.sort) {
-                if (type(col.sort) === Types.String) {
+                if (type(col.sort) === "String") {
                     sort = col.sort;
                 } else if (col.sort === true) {
-                    if (type(col.field) === Types.String) {
+                    if (type(col.field) === "String") {
                         sort = col.field
-                    } else if (type(col.title) === Types.String) {
+                    } else if (type(col.title) === "String") {
                         sort = col.title
                     }
                 }
@@ -182,18 +185,19 @@ export class Table<T extends BaseModel> extends React.Component<TableProps<T>, T
                 }
             }
 
-            tds.push(<td id={`header${idx}`}
-                         style={{textAlign: col.align, width: col.width}}>
-                {cursor ? <button className="no-background no-border mp-0"
-                                  style={{cursor}}
-                                  onClick={e => this.onSort({
-                                      key: sort,
-                                      type: this.state.sort && this.state.sort.type === "DESC" ? "ASC" : "DESC"
-                                  })}>
+            tds.push(<td
+                id={`header${idx}`}
+                style={{textAlign: col.align, width: col.width}}>
+                {cursor ? <button
+                    className="no-background no-border mp-0"
+                    style={{cursor}}
+                    onClick={e => this.onSort({
+                        key: sort,
+                        type: this.state.sort && this.state.sort.type === "DESC" ? "ASC" : "DESC"
+                    })}>
                     {col.title}
                     {sortIcon}
                 </button> : col.title}
-
             </td>)
         });
 
@@ -220,22 +224,23 @@ export class Table<T extends BaseModel> extends React.Component<TableProps<T>, T
             if (!data) return;
             const tds: ReactElement<HTMLTableDataCellElement>[] = [];
             if (this.props.selectable) {
-                tds.push(<td key={`select${data.id}`} style={{textAlign: "center", width: "2rem"}}><label>
-                    <input type="checkbox"
-                           checked={data.id in this.state.selected}
-                           onChange={e => this.onRowCheck(data.id, e.currentTarget.checked)}/>
-                </label></td>)
+                tds.push(<td key={`select${data[this.props.rowKey]}`} style={{textAlign: "center", width: "2rem"}}>
+                    <label>
+                        <input type="checkbox"
+                               checked={data[this.props.rowKey] in this.state.selected}
+                               onChange={e => this.onRowCheck(data[this.props.rowKey], e.currentTarget.checked)}/>
+                    </label></td>)
             }
             this.state.columns.forEach((col, idx) => {
                 if (!col) return;
                 const fieldType = type(col.field)
                     , style: CSSProperties = {}
-                    , key = `td${data.id}${idx}`;
+                    , key = `td${data[this.props.rowKey]}${idx}`;
                 col.width && (style.width = col.width);
                 col.align && (style.textAlign = col.align);
-                if (fieldType === Types.String || fieldType === Types.Number) {
+                if (fieldType === "String" || fieldType === "Number") {
                     tds.push(<td key={key} style={style}>{data[col.field as string]}</td>)
-                } else if (fieldType === Types.Function) {
+                } else if (fieldType === "Function") {
                     tds.push(<td key={key}
                                  style={style}>
                         {execute(col.field, data, (node: ReactNode) => this.onExpand(data, node), index)}
@@ -244,9 +249,9 @@ export class Table<T extends BaseModel> extends React.Component<TableProps<T>, T
                     tds.push(<td key={key} style={style}>{col.field + ""}</td>)
                 }
             });
-            trs.push(<tr key={`tr${data.id}`}>{tds}</tr>);
-            if (this.state.expandId && this.state.expandId === data.id) {
-                trs.push(<tr className="hui-table-expand" key={`expand${data.id}`}>
+            trs.push(<tr key={`tr${data[this.props.rowKey]}`}>{tds}</tr>);
+            if (this.state.expandId && this.state.expandId === data[this.props.rowKey]) {
+                trs.push(<tr className="hui-table-expand" key={`expand${data[this.props.rowKey]}`}>
                     <td colSpan={this.state.columns.length + (this.props.selectable ? 1 : 0)}>{this.expandElement}</td>
                 </tr>)
             }
@@ -257,11 +262,12 @@ export class Table<T extends BaseModel> extends React.Component<TableProps<T>, T
 
     render() {
         const style: CSSProperties = this.props.style || {};
-        return <div className={`hui-table ${this.props.className || ""}`}
-                    style={style}
-                    data-border={this.props.border}
-                    data-fixed-header={this.props.header === "fixed"}
-                    id={this.props.id}>
+        return <div
+            className={`hui-table ${this.props.className || ""}`}
+            style={style}
+            data-border={this.props.border}
+            data-fixed-header={this.props.header === "fixed"}
+            id={this.props.id}>
             {this.props.header === "fixed" ? <div className="hui-table-header">
                 <table cellPadding={0} cellSpacing={0}>
                     {this.renderHeader()}

@@ -1,3 +1,1 @@
-export enum IconAnimation {
-    spin = "spin", pulse = "pulse"
-}
+export type  IconAnimation = "spin" | "pulse";

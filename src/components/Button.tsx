@@ -33,10 +33,11 @@ export class Button extends React.Component<ButtonProps, ButtonState> {
     }
 
     render() {
-        return <button {...this.props}
-                       disabled={this.props.loading || this.props.disabled}>
+        return <button
+            {...this.props}
+            disabled={this.props.loading || this.props.disabled}>
             {this.props.loading ? <>
-                <Icon name="spinner" animation={IconAnimation.spin} key={`buttonLoadingIcon${this.props.id}`}/>&nbsp;
+                <Icon name="spinner" animation="spin" key={`buttonLoadingIcon${this.props.id}`}/>&nbsp;
             </> : null}
             {this.props.text}
         </button>

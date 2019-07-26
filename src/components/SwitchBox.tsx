@@ -48,9 +48,10 @@ export class SwitchBox extends React.Component<SwitchProps, SwitchState> {
 
     render() {
         const {id, name, type} = this.props;
-        return <input type="checkbox" className={`hui-switch${type ? `-${type}` : ""}`}
-                      onChange={this.onChange}
-                      id={id} name={name}
-                      checked={this.state.checked}/>
+        return <input
+            type="checkbox" className={`hui-switch${type ? `-${type}` : ""}`}
+            onChange={this.onChange}
+            id={id} name={name}
+            checked={this.state.checked}/>
     }
 }

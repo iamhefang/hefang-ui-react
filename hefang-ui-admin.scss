@@ -16,6 +16,7 @@ $nav-height: 50px;
   height: $nav-height;
   line-height: $nav-height;
   background: black;
+  z-index: 3;
 }
 
 #side {
@@ -24,6 +25,7 @@ $nav-height: 50px;
   top: $nav-height;
   bottom: 0;
   padding-bottom: 50px;
+  z-index: 2;
 
   .toggle-btn {
     position: absolute;
@@ -35,6 +37,9 @@ $nav-height: 50px;
 
 #main {
   left: 200px;
+  top: 50px;
+  overflow: auto;
+  z-index: 1;
 }
 
 [data-open=false] {

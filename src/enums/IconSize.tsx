@@ -1,7 +1,1 @@
-export enum IconSize {
-    lg = "lg",
-    _2x = "2x",
-    _3x = "3x",
-    _4x = "4x",
-    _5x = "5x"
-}
+export type IconSize = "lg" | "2x" | "3x" | "4x" | "5x"
