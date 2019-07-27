@@ -2,12 +2,12 @@
 @import "../libs/prefixes";
 
 .#{$prefix}swiper {
-  &-container {
-    position: relative;
-    overflow: hidden;
-  }
+	&-container {
+		position: relative;
+		overflow: hidden;
+	}
 
-  &-item {
-    display: inline-block;
-  }
+	&-item {
+		display: inline-block;
+	}
 }

@@ -4,6 +4,6 @@ import {HuiMask} from "../types/HuiMask";
 
 
 export interface DialogOptions extends IDialogOption {
-    mask?: HuiMask
-    content?: ReactNode
+	mask?: HuiMask
+	content?: ReactNode
 }

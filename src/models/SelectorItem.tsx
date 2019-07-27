@@ -1,4 +1,4 @@
 export interface SelectorItem {
-    value?: any
-    text: string
+	value?: any
+	text: string
 }

@@ -1,53 +1,53 @@
 html, body {
-  background: gray;
+	background: gray;
 }
 
 $nav-height: 50px;
 #navbar, #side, #main {
-  position: fixed;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  transition: all .35s ease;
+	position: fixed;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	transition: all .35s ease;
 }
 
 #navbar {
-  height: $nav-height;
-  line-height: $nav-height;
-  background: black;
-  z-index: 3;
+	height: $nav-height;
+	line-height: $nav-height;
+	background: black;
+	z-index: 3;
 }
 
 #side {
-  width: 200px;
-  background: white;
-  top: $nav-height;
-  bottom: 0;
-  padding-bottom: 50px;
-  z-index: 2;
+	width: 200px;
+	background: white;
+	top: $nav-height;
+	bottom: 0;
+	padding-bottom: 50px;
+	z-index: 2;
 
-  .toggle-btn {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-  }
+	.toggle-btn {
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		width: 100%;
+	}
 }
 
 #main {
-  left: 200px;
-  top: 50px;
-  overflow: auto;
-  z-index: 1;
+	left: 200px;
+	top: 50px;
+	overflow: auto;
+	z-index: 1;
 }
 
 [data-open=false] {
-  #side {
-    width: 40px;
-  }
+	#side {
+		width: 40px;
+	}
 
-  #main {
-    left: 40px;
-  }
+	#main {
+		left: 40px;
+	}
 }

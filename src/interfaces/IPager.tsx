@@ -1,5 +1,5 @@
 export interface IPager {
-    total: number
-    pageIndex: number
-    pageSize: number
+	total: number
+	pageIndex: number
+	pageSize: number
 }

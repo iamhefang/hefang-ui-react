@@ -2,76 +2,91 @@
 @import "../libs/prefixes";
 
 .#{$prefix}table {
-  background: white;
-  table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  &-header {
-    height: $table-header-height;
-    line-height: $table-header-height;
-    background: #f2f2f2;
-    border: {
-      bottom: 1px solid $table-border-color;
-      top: 1px solid $table-border-color
-    }
-    td {
-      padding: 0 .7rem;
-    }
-    .#{$prefix}icon {
-      margin-left: .5rem;
-    }
-  }
-  &-body {
-    td {
-      padding: .7rem;
-      word-break: break-all;
-    }
-  }
-  &-expand {
-    background: #eaeaea;
-  }
-  &-footer {
-    padding: .7rem;
-    box-sizing: border-box;
-    border-top: 1px solid $table-border-color;
-  }
-  &[data-fixed-header=true] {
-    overflow: auto;
-    .#{$prefix}table-header {
-      padding-right: .5rem;
-    }
-    .#{$prefix}table-body {
-      overflow-y: auto;
-      &::-webkit-scrollbar {
-        width: .5rem;
-      }
-      &::-webkit-scrollbar-track {
-        background: #ececec;
-      }
-      &::-webkit-scrollbar-thumb {
-        background: $border-color;
-      }
-    }
-    table {
-      table-layout: fixed;
-    }
-  }
+	background: white;
 
-  &[data-border=row], &[data-border=both] {
-    border-bottom: 1px solid $table-border-color;
-    tr {
-      border-top: 1px solid $table-border-color;
-    }
-  }
+	table {
+		width: 100%;
+		border-collapse: collapse;
+	}
 
-  &[data-border=col], &[data-border=both] {
-    td, th {
-      border: none {
-        left: 1px solid $table-border-color;
-        right: 1px solid $table-border-color;
-      }
-    }
-  }
+	&-header {
+		height: $table-header-height;
+		line-height: $table-header-height;
+		background: #f2f2f2;
+		border: {
+			bottom: 1px solid $table-border-color;
+			top: 1px solid $table-border-color
+		}
+
+		td {
+			padding: 0 .7rem;
+		}
+
+		.#{$prefix}icon {
+			margin-left: .5rem;
+		}
+	}
+
+	&-body {
+		td {
+			padding: .7rem;
+			word-break: break-all;
+		}
+	}
+
+	&-expand {
+		background: #eaeaea;
+	}
+
+	&-footer {
+		padding: .7rem;
+		box-sizing: border-box;
+		border-top: 1px solid $table-border-color;
+	}
+
+	&[data-fixed-header=true] {
+		overflow: auto;
+
+		.#{$prefix}table-header {
+			padding-right: .5rem;
+		}
+
+		.#{$prefix}table-body {
+			overflow-y: auto;
+
+			&::-webkit-scrollbar {
+				width: .5rem;
+			}
+
+			&::-webkit-scrollbar-track {
+				background: #ececec;
+			}
+
+			&::-webkit-scrollbar-thumb {
+				background: $border-color;
+			}
+		}
+
+		table {
+			table-layout: fixed;
+		}
+	}
+
+	&[data-border=row], &[data-border=both] {
+		border-bottom: 1px solid $table-border-color;
+
+		tr {
+			border-top: 1px solid $table-border-color;
+		}
+	}
+
+	&[data-border=col], &[data-border=both] {
+		td, th {
+			border: none {
+				left: 1px solid $table-border-color;
+				right: 1px solid $table-border-color;
+			}
+		}
+	}
 
 }

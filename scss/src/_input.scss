@@ -2,49 +2,49 @@
 @import "../libs/prefixes";
 
 .#{$prefix}input {
-  border: thin solid $border-color;
-  padding: 0 6px;
-  @include box-sizing(border-box);
-  @include border-radius($border-radius);
-  @include transition(all .35s);
-  margin: 2px;
-  height: $input-height-default;
-  line-height: $input-height-default;
+	border: thin solid $border-color;
+	padding: 0 6px;
+	@include box-sizing(border-box);
+	@include border-radius($border-radius);
+	@include transition(all .35s);
+	margin: 2px;
+	height: $input-height-default;
+	line-height: $input-height-default;
 
-  &[data-size='small'] {
-    height: $input-height-small;
-    line-height: $input-height-small;
-  }
+	&[data-size='small'] {
+		height: $input-height-small;
+		line-height: $input-height-small;
+	}
 
-  &[data-size='large'] {
-    height: $input-height-large;
-    line-height: $input-height-large;
-  }
+	&[data-size='large'] {
+		height: $input-height-large;
+		line-height: $input-height-large;
+	}
 
-  &:focus {
-    @include box-shadow(0 0 0 0.2rem rgba(0, 123, 255, .25));
-  }
+	&:focus {
+		@include box-shadow(0 0 0 0.2rem rgba(0, 123, 255, .25));
+	}
 
-  @at-root {
-    @each $key, $color in $colorMap {
-      &-#{$key} {
-        @extend .#{$prefix}input;
-        border-color: $color;
+	@at-root {
+		@each $key, $color in $colorMap {
+			&-#{$key} {
+				@extend .#{$prefix}input;
+				border-color: $color;
 
-        &:focus {
-          @include box-shadow(0 0 0 0.2rem rgba($color, .5));
-        }
-      }
-    }
-    select.#{$prefix}input {
-      padding: .3rem .6rem;
-    }
+				&:focus {
+					@include box-shadow(0 0 0 0.2rem rgba($color, .5));
+				}
+			}
+		}
+		select.#{$prefix}input {
+			padding: .3rem .6rem;
+		}
 
-    @each $dom in (input, select) {
-      #{$dom}#{&} {
-        height: 2rem;
-        line-height: 2rem;
-      }
-    }
-  }
+		@each $dom in (input, select) {
+			#{$dom}#{&} {
+				height: 2rem;
+				line-height: 2rem;
+			}
+		}
+	}
 }

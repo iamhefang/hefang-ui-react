@@ -1,27 +1,27 @@
 import {ReactText} from "react";
 
 export interface DialogOperater {
-    height(): number
+	height(): number
 
-    height(value: ReactText): DialogOperater;
+	height(value: ReactText): DialogOperater;
 
-    height(value?)
+	height(value?)
 
-    width(): number
+	width(): number
 
-    width(value: ReactText): DialogOperater;
+	width(value: ReactText): DialogOperater;
 
-    width(value?)
+	width(value?)
 
-    close(data?: any)
+	close(data?: any)
 
-    data(): any
+	data(): any
 
-    data(data?: any): DialogOperater
+	data(data?: any): DialogOperater
 
-    id(): string
+	id(): string
 
-    shake(duration?: number): DialogOperater
+	shake(duration?: number): DialogOperater
 
-    contentElement(): ChildNode
+	contentElement(): ChildNode
 }

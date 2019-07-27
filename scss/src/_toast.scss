@@ -3,45 +3,48 @@
 @import "functions";
 
 .#{$prefix}toast {
-  position: fixed;
-  padding: .4rem .8rem;
-  background: rgba(0, 0, 0, .8);
-  color: white;
-  z-index: $z-index-dialog + 1;
-  top: 50%;
-  left: 50%;
-  width: fit-content;
-  max-width: 30rem;
-  line-height: 1.4;
-  @include box-sizing(content-box);
-  @include transform(translate(-50%, -50%));
-  @include border-radius($border-radius);
-  @include box-shadow(0 0 .5rem $border-color);
-  @include animation(fade-in .35s);
-  @at-root {
-    @each $key, $color in $colorMap {
-      &-#{$key} {
-        @extend .#{$prefix}toast;
-        background: rgba($color, .95);
-        @if ($key==light) {
-          color: $color-dark;
-        }
-      }
-    }
-  }
-  &-block {
-    @extend .text-center;
-    min-width: 6.2rem;
-    min-height: 7rem;
-    .fa {
-      margin: .65rem;
-    }
-    p {
-      @extend .mp-0;
-      line-height: 2;
-    }
-  }
-  @media (max-width: 64rem) {
-    max-width: 80%;
-  }
+	position: fixed;
+	padding: .4rem .8rem;
+	background: rgba(0, 0, 0, .8);
+	color: white;
+	z-index: $z-index-dialog + 1;
+	top: 50%;
+	left: 50%;
+	width: fit-content;
+	max-width: 30rem;
+	line-height: 1.4;
+	@include box-sizing(content-box);
+	@include transform(translate(-50%, -50%));
+	@include border-radius($border-radius);
+	@include box-shadow(0 0 .5rem $border-color);
+	@include animation(fade-in .35s);
+	@at-root {
+		@each $key, $color in $colorMap {
+			&-#{$key} {
+				@extend .#{$prefix}toast;
+				background: rgba($color, .95);
+				@if ($key==light) {
+					color: $color-dark;
+				}
+			}
+		}
+	}
+	&-block {
+		@extend .text-center;
+		min-width: 6.2rem;
+		min-height: 7rem;
+
+		.fa {
+			margin: .65rem;
+		}
+
+		p {
+			@extend .mp-0;
+			line-height: 2;
+		}
+	}
+
+	@media (max-width: 64rem) {
+		max-width: 80%;
+	}
 }

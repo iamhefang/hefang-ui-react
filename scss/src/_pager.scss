@@ -1,33 +1,33 @@
 @import "variables";
 
 .#{$prefix}pager {
-  &-item {
-    border: 1px solid $border-color;
-    padding: 0 5px;
-    border-radius: 3px;
+	&-item {
+		border: 1px solid $border-color;
+		padding: 0 5px;
+		border-radius: 3px;
 
-    & + .#{$prefix}pager-item {
-      margin-left: 8px;
-    }
+		& + .#{$prefix}pager-item {
+			margin-left: 8px;
+		}
 
-    input {
-      border: none;
-      width: 50px;
-      border-bottom: 1px $border-color solid;
-      text-align: center;
-    }
+		input {
+			border: none;
+			width: 50px;
+			border-bottom: 1px $border-color solid;
+			text-align: center;
+		}
 
-    height: $input-height-default;
-    line-height: $input-height-default;
+		height: $input-height-default;
+		line-height: $input-height-default;
 
-    &[data-size='small'] {
-      height: $input-height-small;
-      line-height: $input-height-small;
-    }
+		&[data-size='small'] {
+			height: $input-height-small;
+			line-height: $input-height-small;
+		}
 
-    &[data-size='large'] {
-      height: $input-height-large;
-      line-height: $input-height-large;
-    }
-  }
+		&[data-size='large'] {
+			height: $input-height-large;
+			line-height: $input-height-large;
+		}
+	}
 }

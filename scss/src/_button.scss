@@ -2,65 +2,66 @@
 @import "variables";
 
 .#{$prefix}btn {
-  @include border-radius(5px);
-  @include box-sizing(border-box);
-  @include transition(background .2s);
-  border: none;
-  background: #ececec;
-  padding: 0 8px;
+	@include border-radius(5px);
+	@include box-sizing(border-box);
+	@include transition(background .2s);
+	border: none;
+	background: #ececec;
+	padding: 0 8px;
 
-  cursor: pointer;
-  outline-offset: -3px;
-  margin: .1rem;
-  height: $input-height-default;
-  line-height: $input-height-default;
-  &[data-size='small'] {
-    height: $input-height-small;
-    line-height: $input-height-small;
-  }
+	cursor: pointer;
+	outline-offset: -3px;
+	margin: .1rem;
+	height: $input-height-default;
+	line-height: $input-height-default;
 
-  &[data-size='large'] {
-    height: $input-height-large;
-    line-height: $input-height-large;
-  }
+	&[data-size='small'] {
+		height: $input-height-small;
+		line-height: $input-height-small;
+	}
 
-  &:focus {
-    outline: thin gray dashed;
-  }
+	&[data-size='large'] {
+		height: $input-height-large;
+		line-height: $input-height-large;
+	}
 
-  &:disabled, &.disabled {
-    cursor: not-allowed;
-    user-focus: none;
-    opacity: .6;
+	&:focus {
+		outline: thin gray dashed;
+	}
 
-    &:hover {
-      opacity: .6
-    }
+	&:disabled, &.disabled {
+		cursor: not-allowed;
+		user-focus: none;
+		opacity: .6;
 
-    &:focus {
-      outline: none;
-    }
-  }
+		&:hover {
+			opacity: .6
+		}
 
-  &-border-less {
-    @extend .#{$prefix}btn;
-    background: none;
-  }
+		&:focus {
+			outline: none;
+		}
+	}
 
-  @each $key, $color in $colorMap {
-    &-#{$key} {
-      @extend .#{$prefix}btn;
-      background: $color;
-      @if ($key==light) {
-        color: black;
-      } @else {
-        color: white;
-      }
-      @if ($key!=light) {
-        &:focus {
-          outline-color: rgba(236, 236, 236, 0.62);
-        }
-      }
-    }
-  }
+	&-border-less {
+		@extend .#{$prefix}btn;
+		background: none;
+	}
+
+	@each $key, $color in $colorMap {
+		&-#{$key} {
+			@extend .#{$prefix}btn;
+			background: $color;
+			@if ($key==light) {
+				color: black;
+			} @else {
+				color: white;
+			}
+			@if ($key!=light) {
+				&:focus {
+					outline-color: rgba(236, 236, 236, 0.62);
+				}
+			}
+		}
+	}
 }

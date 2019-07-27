@@ -1,4 +1,4 @@
 export interface SqlSort {
-    key: string
-    type?: "ASC" | "DESC"
+	key: string
+	type?: "ASC" | "DESC"
 }
