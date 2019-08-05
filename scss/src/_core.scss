@@ -112,6 +112,14 @@ a {
 	@extend .padding-0;
 }
 
+.resize {
+	@each $direction in (both, horizontal, vertical) {
+		&-#{$direction} {
+			resize: $direction;
+		}
+	}
+}
+
 .no {
 	&-select {
 		@include user-select(none)

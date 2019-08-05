@@ -11,14 +11,34 @@
 	height: $input-height-default;
 	line-height: $input-height-default;
 
+	@at-root {
+		div#{&}, textarea#{&} {
+			height: auto;
+			min-height: $input-height-default;
+		}
+	}
+
 	&[data-size='small'] {
 		height: $input-height-small;
 		line-height: $input-height-small;
+		@at-root {
+			div#{&}, textarea#{&} {
+				height: auto;
+				min-height: $input-height-small;
+			}
+		}
 	}
 
 	&[data-size='large'] {
 		height: $input-height-large;
 		line-height: $input-height-large;
+		@at-root {
+
+			div#{&}, textarea#{&} {
+				height: auto;
+				min-height: $input-height-large;
+			}
+		}
 	}
 
 	&:focus {
