@@ -5,7 +5,33 @@
 	list-style: none;
 	padding: 0;
 	margin: 0;
-	background: white;
+	//background: white;
+
+	@mixin popped-sub-menu {
+		.#{$prefix}menuview {
+			min-width: max-content;
+			display: none;
+			position: absolute;
+			left: 100%;
+			top: 0;
+			box-shadow: 5px -5px 5px rgba(0, 0, 0, 0.4), 5px 5px 5px 0px rgba(0, 0, 0, 0.4);
+
+			.#{$prefix}menuview {
+				&-icon {
+					display: none;
+				}
+
+				&-label {
+					padding: 0 25px 0 20px;
+				}
+
+				&-label, &-extra {
+					display: block;
+				}
+			}
+		}
+
+	}
 
 	.#{$prefix}menuview {
 		display: none;
@@ -18,6 +44,20 @@
 	&-item {
 		height: $menuview-height;
 		line-height: $menuview-height;
+
+		&[data-active="true"] {
+			color: #0f97fe;
+		}
+
+		&:hover {
+			background: #eeeeee;
+
+			& + .#{$prefix}menuview {
+				.#{$prefix}menuview-pophead {
+					background: #eeeeee;
+				}
+			}
+		}
 	}
 
 	&-icon {
@@ -30,8 +70,8 @@
 		display: none;
 	}
 
-	[data-active="true"] {
-		background: #e6e6e6;
+	[data-fold="false"] {
+		background: #f6f6f6;
 
 		.#{$prefix}menuview {
 			display: block;
@@ -40,61 +80,23 @@
 		}
 	}
 
-	[data-active="false"] {
+	[data-fold="true"] {
 		&:hover {
 			.#{$prefix}menuview {
 				display: block;
+				background: white;
 			}
 		}
 
-		.#{$prefix}menuview {
-			min-width: max-content;
-			display: none;
-			position: absolute;
-			left: 100%;
-			top: 0;
-
-			.#{$prefix}menuview {
-				&-icon {
-					display: none;
-				}
-
-				&-label {
-					padding: 0 10px;
-				}
-
-				&-label, &-extra {
-					display: block;
-				}
-			}
-		}
+		@include popped-sub-menu();
 	}
 
 	&[data-open="false"] {
+		@include popped-sub-menu();
 
 		.#{$prefix}menuview {
-			min-width: max-content;
-			display: none;
-			position: absolute;
-			left: 100%;
-			top: 0;
-
 			&-label, &-extra {
 				display: none;
-			}
-
-			.#{$prefix}menuview {
-				&-icon {
-					display: none;
-				}
-
-				&-label {
-					padding: 0 10px;
-				}
-
-				&-label, &-extra {
-					display: block;
-				}
 			}
 		}
 

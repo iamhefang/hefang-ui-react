@@ -1,5 +1,5 @@
 import * as React from "react";
-import {CSSProperties} from "react";
+import {CSSProperties, ReactNode} from "react";
 import {IconSize} from "../enums/IconSize";
 import {IconAnimation} from "../enums/IconAnimation";
 import {IconNamespace} from "../types/IconNamespace";
@@ -13,6 +13,7 @@ export interface IconProps {
 	animation?: IconAnimation
 	style?: CSSProperties
 	onClick?: Function
+	children?: ReactNode
 }
 
 export function Icon(props: IconProps) {
@@ -22,6 +23,7 @@ export function Icon(props: IconProps) {
 	return React.createElement(props.tagName || 'i', {
 		className,
 		style: props.style,
-		onClick: props.onClick
+		onClick: props.onClick,
+		children: props.children
 	})
 }

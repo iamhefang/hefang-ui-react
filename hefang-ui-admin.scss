@@ -2,7 +2,31 @@ html, body {
 	background: gray;
 }
 
+$scroll-size: 10px;
+::-webkit-scrollbar {
+	width: $scroll-size;
+	height: $scroll-size;
+}
+
+::-webkit-scrollbar-thumb {
+	background: rgb(173, 173, 173);
+	border-radius: $scroll-size / 2;
+}
+
+::-webkit-scrollbar-track {
+	background: #d4d4d4;
+	border-radius: $scroll-size / 2;
+}
+
+::-webkit-scrollbar-button {
+	background: #dedede;
+	height: $scroll-size;
+	width: $scroll-size;
+	border-radius: $scroll-size / 2;
+}
+
 $nav-height: 50px;
+$nav-bg: #2f2f2f;
 #navbar, #side, #main {
 	position: fixed;
 	left: 0;
@@ -15,8 +39,79 @@ $nav-height: 50px;
 #navbar {
 	height: $nav-height;
 	line-height: $nav-height;
-	background: black;
+	background: $nav-bg;
 	z-index: 3;
+	padding: 0 10px;
+	box-sizing: border-box;
+	color: white;
+}
+
+.navbar {
+	&-brand {
+		color: white;
+		font-size: 120%;
+		font-weight: bold;
+		text-decoration: none;
+		margin-right: 25px;
+		@at-root {
+			a#{&} {
+				&:hover {
+					text-decoration: underline;
+				}
+			}
+		}
+	}
+
+	&-item {
+		color: white;
+		margin: 0 3px;
+		padding: 5px 8px;
+		border-radius: 5px;
+		text-decoration: none;
+		transition: background-color .35s ease;
+
+		&:hover, &.active {
+			background: #565656;
+		}
+	}
+
+	&-dropdown {
+		position: relative;
+		display: inline-block;
+		text-align: left;
+
+		&:hover {
+			.navbar-dropdown-container {
+				transform: scaleY(1);
+			}
+
+			.navbar-item {
+				background: #565656;
+			}
+		}
+
+		&-container {
+			position: absolute;
+			padding-top: 10px;
+			top: 100%;
+			right: 0;
+			transform: scaleY(0);
+			transform-origin: top;
+			transition: all .35s ease;
+			min-width: fit-content;
+			width: 100%;
+		}
+
+		&-content {
+			background: $nav-bg;
+			border-radius: 5px;
+			overflow: hidden;
+
+			.hui-menuview-item:hover {
+				color: black;
+			}
+		}
+	}
 }
 
 #side {
@@ -32,6 +127,8 @@ $nav-height: 50px;
 		bottom: 0;
 		left: 0;
 		width: 100%;
+		border-top: thin solid #dddddd;
+		padding: 10px 0;
 	}
 }
 
@@ -49,5 +146,29 @@ $nav-height: 50px;
 
 	#main {
 		left: 40px;
+	}
+}
+
+[data-size="large"] {
+	&[data-open=false] {
+		#side {
+			width: 48px;
+		}
+
+		#main {
+			left: 48px;
+		}
+	}
+}
+
+[data-size="small"] {
+	&[data-open=false] {
+		#side {
+			width: 40px * .8;
+		}
+
+		#main {
+			left: 40px * .8;
+		}
 	}
 }

@@ -18,5 +18,7 @@
 }
 
 .fab {
-	font-family: 'Font Awesome 5 Brands';
+	&:before {
+		font-family: 'Font Awesome 5 Brands';
+	}
 }

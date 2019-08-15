@@ -1,12 +1,12 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import {ColorType} from "./src/types/ColorType";
-import {MenuView} from "./src/components/MenuView";
 import {Icon} from "./src/components/Icon";
 import Loading from "./src/components/Loading";
 import {Empty} from "./src/components/Empty";
 import Swiper from "./src/components/Swiper";
 import {div} from "./src/functions/dom";
+import {MenuView} from "./src/components/MenuView";
 
 const colorMap: ColorType[] = [
 	"primary",
@@ -21,42 +21,85 @@ const colorMap: ColorType[] = [
 
 interface State {
 	menuOpen: boolean
+	showMenuLabel: boolean
 }
 
 class Example extends React.Component<any, State> {
 	constructor(props) {
 		super(props);
-		this.state = {menuOpen: true}
+		this.state = {menuOpen: true, showMenuLabel: true}
 	}
 
 	render() {
-		return <div data-open={this.state.menuOpen}>
-			<nav id="navbar"></nav>
+		return <div data-open={this.state.menuOpen} data-size={"large"}>
+			<nav id="navbar" className="display-flex-row">
+				<div className="flex-1">
+					<a href="#" className="navbar-brand">啊中职啊</a>
+					<a href="#" className="navbar-item">功能1</a>
+					<a href="#" className="navbar-item active">功能2</a>
+					<a href="#" className="navbar-item">功能3</a>
+				</div>
+
+				<div className="flex-1 text-right">
+					<a href="#" className="navbar-item">功能4</a>
+					<a href="#" className="navbar-item active">功能55</a>
+					<a href="#" className="navbar-item">功能6</a>
+					<div className="navbar-dropdown">
+						<a href="#" className="navbar-item">sjdflsjkdf <Icon name="user"/></a>
+						<div className="navbar-dropdown-container">
+							<div className="navbar-dropdown-content">
+								<MenuView
+									items={[
+										{
+											icon: <Icon name="info"/>,
+											label: "关于"
+										},
+										{
+											icon: <Icon name="table"/>,
+											label: "表格",
+										},
+										{
+											icon: <Icon name="qrcode"/>,
+											label: "二维码",
+										}
+									]} size={"default"}/>
+							</div>
+						</div>
+					</div>
+				</div>
+			</nav>
 			<div id="side">
-				<MenuView open={this.state.menuOpen} items={[
-					{
-						icon: <Icon name="info"/>,
-						label: "关于"
-					},
-					{
-						icon: <Icon name="table"/>,
-						label: "表格",
-						child: [
-							{label: "普通表格"},
-							{label: "带分页"},
-						]
-					},
-					{
-						icon: <Icon name="qrcode"/>,
-						label: "二维码",
-						child: [
-							{label: "普通"},
-							{label: "带图标"}
-						]
-					}
-				]} size={"large"}/>
-				<button className="toggle-btn" onClick={e => this.setState({menuOpen: !this.state.menuOpen})}>
-					菜单
+				<MenuView
+					onLabelVisibleChange={showMenuLabel => this.setState({showMenuLabel})}
+					open={this.state.menuOpen}
+					items={[
+						{
+							icon: <Icon name="info"/>,
+							label: "关于"
+						},
+						{
+							icon: <Icon name="table"/>,
+							label: "表格",
+							children: [
+								{label: "普通表格"},
+								{label: "带分页"},
+							]
+						},
+						{
+							icon: <Icon name="qrcode"/>,
+							label: "二维码",
+							children: [
+								{label: "普通"},
+								{label: "带图标"}
+							]
+						}
+					]} size={"large"}/>
+				<button
+					className="toggle-btn no-border no-background"
+					onClick={e => this.setState({menuOpen: !this.state.menuOpen})}>
+					{this.state.showMenuLabel ?
+						<Icon name="angle-double-left"> 收起菜单</Icon> :
+						<Icon name="angle-double-right"/>}
 				</button>
 			</div>
 			<div id="main">

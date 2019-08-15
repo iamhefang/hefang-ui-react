@@ -5,6 +5,6 @@ export interface MenuViewItemModel {
 	label: string
 	id?: string
 	url?: string
-	child?: MenuViewItemModel[]
+	children?: Array<MenuViewItemModel>
 	extra?: ReactNode
 }
