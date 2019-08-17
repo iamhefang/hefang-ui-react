@@ -5,7 +5,13 @@
 	list-style: none;
 	padding: 0;
 	margin: 0;
-	//background: white;
+	width: 200px;
+	transition: width .35s ease;
+
+	a {
+		text-decoration: none;
+		color: inherit;
+	}
 
 	@mixin popped-sub-menu {
 		.#{$prefix}menuview {
@@ -77,6 +83,12 @@
 			display: block;
 			position: relative;
 			background: inherit;
+
+			.#{$prefix}menuview-icon {
+				.#{$prefix}icon {
+					display: none;
+				}
+			}
 		}
 	}
 
@@ -100,6 +112,8 @@
 			}
 		}
 
+		width: $menu-item-height;
+
 		li {
 			&:hover {
 				.#{$prefix}menuview {
@@ -121,7 +135,10 @@
 
 		.#{$prefix}menuview-icon {
 			width: $menuview-height*.8;
-			text-align: center;
+		}
+
+		&[data-open="false"] {
+			width: $menuview-height*.8;
 		}
 	}
 
@@ -129,12 +146,14 @@
 		.#{$prefix}menuview-item {
 			height: $menuview-height*1.2;
 			line-height: $menuview-height*1.2;
-
 		}
 
 		.#{$prefix}menuview-icon {
 			width: $menuview-height*1.2;
-			text-align: center;
+		}
+
+		&[data-open="false"] {
+			width: $menuview-height*1.2;
 		}
 	}
 }

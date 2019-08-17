@@ -1,3 +1,3 @@
 import {MenuViewItemModel} from "../models/MenuViewItemModel";
 
-export type OnMenuItemClick = (item?: MenuViewItemModel) => void | boolean
+export type OnMenuItemClick = (item?: MenuViewItemModel, parent?: MenuViewItemModel) => void | boolean

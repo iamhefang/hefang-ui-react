@@ -17,6 +17,11 @@
 			text-align: center;
 		}
 
+		select {
+			background: none;
+			border: none;
+		}
+
 		height: $input-height-default;
 		line-height: $input-height-default;
 

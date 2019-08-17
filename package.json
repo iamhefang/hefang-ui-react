@@ -5,8 +5,8 @@
 	"main": "index.js",
 	"scripts": {
 		"test": "echo no",
-		"build": "tsc && webpack -p --mode=production && echo export as namespace HuiReact; >> index.d.ts",
-		"buildWatch": "webpack -w -p --mode=production && echo export as namespace HuiReact; >> index.d.ts",
+		"build": "tsc && webpack -p --mode=production && echo 'export as namespace HuiReact;' >> index.d.ts",
+		"buildWatch": "webpack -w -p --mode=production && echo 'export as namespace HuiReact;' >> index.d.ts",
 		"buildAndPack": "rm *.tgz && npm run build && npm pack",
 		"dev": "webpack-dev-server --inline"
 	},
