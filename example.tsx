@@ -7,6 +7,7 @@ import {Empty} from "./src/components/Empty";
 import Swiper from "./src/components/Swiper";
 import {div} from "./src/functions/dom";
 import {MenuView} from "./src/components/MenuView";
+import {Progress} from "./src/components/Progress";
 
 const colorMap: ColorType[] = [
 	"primary",
@@ -22,12 +23,22 @@ const colorMap: ColorType[] = [
 interface State {
 	menuOpen: boolean
 	showMenuLabel: boolean
+	progress: number
 }
 
 class Example extends React.Component<any, State> {
 	constructor(props) {
 		super(props);
-		this.state = {menuOpen: true, showMenuLabel: true}
+		this.state = {menuOpen: true, showMenuLabel: true, progress: 0}
+	}
+
+	componentDidMount(): void {
+		setInterval(() => {
+			let progress = this.state.progress;
+			progress += 10;
+			if (progress > 100) progress = 0;
+			this.setState({progress})
+		}, 2000)
 	}
 
 	render() {
@@ -103,6 +114,9 @@ class Example extends React.Component<any, State> {
 				</button>
 			</div>
 			<div id="main">
+				<Progress value={this.state.progress} size={"small"}/>
+				<Progress value={this.state.progress}/>
+				<Progress value={this.state.progress} size={"large"}/>
 				<Loading loading={true} text="loading">
 					<h1>加载上</h1>
 					<h1>加载上</h1>
